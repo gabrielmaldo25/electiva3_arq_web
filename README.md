@@ -1,4 +1,4 @@
-# Create React App example with MUI Base & Tailwind CSS
+# Frontend Trabajo Practico Electiva III - Arquitectura Web
 
 ## How to use
 
