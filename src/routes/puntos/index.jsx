@@ -20,8 +20,12 @@ import {
   IconButton,
   TableHead,
 } from "@mui/material";
-import ABMPago from "../../components/abmPago";
-const puntos = [{ nombre: "Cliente 1", puntos: 5, vence: new Date() }];
+import ABMRegla from "../../components/abmRegla";
+
+const puntos = [
+  { monto: 50000, puntos: 5, vence: 25 },
+  { monto: 80000, puntos: 8, vence: 20 },
+];
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -114,7 +118,7 @@ export default function Index() {
           <section>
             <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
               <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-white">Puntos</h1>
+                <h1 className="text-3xl font-bold text-white">Reglas</h1>
                 <a
                   className="hover:bg-green-600 group flex items-center rounded-md bg-green-800 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
                   onClick={() => setOpen(true)}
@@ -128,7 +132,7 @@ export default function Index() {
                   >
                     <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
                   </svg>
-                  Agregar Pago
+                  Agregar Regla
                 </a>
               </div>
               <form className="group relative">
@@ -162,9 +166,13 @@ export default function Index() {
                 <TableHead className="bg-green-800">
                   <TableRow>
                     {/* <TableCell className="text-white">id</TableCell> */}
-                    <TableCell className="text-white">Cliente</TableCell>
-                    <TableCell className="text-white">Puntos</TableCell>
-                    <TableCell className="text-white">Vence</TableCell>
+                    <TableCell className="text-white">Monto</TableCell>
+                    <TableCell className="text-white">
+                      Puntos por monto
+                    </TableCell>
+                    <TableCell className="text-white">
+                      Validez en días
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -188,13 +196,13 @@ export default function Index() {
                         scope="row"
                         className="text-sand-300 hover:text-gray-900"
                       >
-                        {row.nombre}
+                        {row.monto}
                       </TableCell>
                       <TableCell className="text-sand-300 hover:text-gray-900">
                         {row.puntos}
                       </TableCell>
                       <TableCell className="text-sand-300 hover:text-gray-900">
-                        {row.vence.toLocaleDateString()}
+                        {row.vence}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -231,7 +239,7 @@ export default function Index() {
                 </TableFooter>
               </Table>
             </TableContainer>
-            {open && <ABMPago open={open} setOpen={setOpen} />}
+            {open && <ABMRegla open={open} setOpen={setOpen} />}
           </section>
         </div>
       </div>

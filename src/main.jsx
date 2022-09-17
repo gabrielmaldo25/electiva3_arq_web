@@ -11,6 +11,7 @@ import EditCliente, { action as editAction } from "./routes/clientes/edit";
 import { action as destroyAction } from "./routes/clientes/destroy";
 import Index from "./routes/clientes/index";
 import IndexDashboard from "./routes/dashboard/index";
+import IndexPuntos from "./routes/puntos/index";
 
 export default function Main() {
   const router = createBrowserRouter([
@@ -49,6 +50,11 @@ export default function Main() {
         },
       ],
     },
+    {
+      path: "puntos",
+      element: <IndexPuntos />,
+      errorElement: <ErrorPage />,
+    }
   ]);
   return <RouterProvider router={router} />;
 }
