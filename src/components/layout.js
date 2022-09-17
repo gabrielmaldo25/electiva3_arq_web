@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 
 const pages = [
   { href: "/", name: "Dashboard" },
-  { href: "/contacts", name: "Clientes" },
+  { href: "/clientes", name: "Clientes" },
   { href: "/puntos", name: "Puntos" },
 ];
 

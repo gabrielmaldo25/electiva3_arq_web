@@ -1,42 +1,42 @@
 import { Form, useLoaderData } from "react-router-dom";
-import { getContact } from "../contacts";
+import { getCliente } from "./clientes";
 
 export async function loader({ params }) {
-  const contact = await getContact(params.contactId);
-  if (!contact) {
+  const cliente = await getCliente(params.clienteId);
+  if (!cliente) {
     throw new Response("", {
       status: 404,
       statusText: "Not Found",
     });
   }
-  return contact;
+  return cliente;
 }
 
-export default function Contact() {
-  const contact = useLoaderData();
+export default function Cliente() {
+  const cliente = useLoaderData();
 
   return (
     <div className="flex flex-1 p-4">
       <div>
         <h1 className="text-lg text-white font-medium">
-          {contact.first || contact.last ? (
+          {cliente.first || cliente.last ? (
             <>
-              {contact.first} {contact.last}
+              {cliente.first} {cliente.last}
             </>
           ) : (
             <i>No Name</i>
           )}{" "}
         </h1>
 
-        {contact.twitter && (
+        {cliente.twitter && (
           <p>
-            <a target="_blank" href={`https://twitter.com/${contact.twitter}`}>
-              {contact.twitter}
+            <a target="_blank" href={`https://twitter.com/${cliente.twitter}`}>
+              {cliente.twitter}
             </a>
           </p>
         )}
 
-        {contact.notes && <p>{contact.notes}</p>}
+        {cliente.notes && <p>{cliente.notes}</p>}
 
         <div>
           <Form action="edit">

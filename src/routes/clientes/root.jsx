@@ -8,24 +8,24 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router-dom";
-import { getContacts, createContact } from "../contacts";
+import { getClientes, createCliente } from "./clientes";
 import { useEffect } from "react";
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const contacts = await getContacts(q);
-  return { contacts, q };
+  const clientes = await getClientes(q);
+  return { clientes, q };
 }
 
 export async function action() {
-  const contact = await createContact();
-  return redirect(`/contacts/${contact.id}/edit`);
+  const cliente = await createCliente();
+  return redirect(`/clientes/${cliente.id}/edit`);
 }
 
 export default function Root() {
-  const { contacts, q } = useLoaderData();
+  const { clientes, q } = useLoaderData();
   const navigation = useNavigation();
   const submit = useSubmit();
 
@@ -45,7 +45,7 @@ export default function Root() {
             <Form id="search-form" role="search">
               <input
                 id="q"
-                aria-label="Search contacts"
+                aria-label="Search clientes"
                 placeholder="Buscar"
                 type="search"
                 name="q"
@@ -63,25 +63,25 @@ export default function Root() {
             </Form>
           </div>
           <nav>
-            {contacts.length ? (
+            {clientes.length ? (
               <ul>
-                {contacts.map((contact) => (
-                  <li key={contact.id}>
+                {clientes.map((cliente) => (
+                  <li key={cliente.id}>
                     <NavLink
-                      to={`${contact.id}`}
+                      to={`${cliente.id}`}
                       className={({ isActive, isPending }) =>
                         isActive ? "active" : isPending ? "pending" : ""
                       }
                     >
-                      <Link to={`${contact.id}`}>
-                        {contact.first || contact.last ? (
+                      <Link to={`${cliente.id}`}>
+                        {cliente.first || cliente.last ? (
                           <>
-                            {contact.first} {contact.last}
+                            {cliente.first} {cliente.last}
                           </>
                         ) : (
                           <i>No Name</i>
                         )}{" "}
-                        {contact.favorite && <span>★</span>}
+                        {cliente.favorite && <span>★</span>}
                       </Link>
                     </NavLink>
                   </li>
@@ -89,7 +89,7 @@ export default function Root() {
               </ul>
             ) : (
               <p>
-                <i>No contacts</i>
+                <i>No clientes</i>
               </p>
             )}
           </nav>

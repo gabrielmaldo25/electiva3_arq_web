@@ -1,24 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Routes,
-  BrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root, {
   loader as rootLoader,
   action as rootAction,
-} from "./routes/root";
+} from "./routes/clientes/root";
 import ErrorPage from "./error-page";
-import Contact, { loader as contactLoader } from "./routes/contact";
-import EditContact, { action as editAction } from "./routes/edit";
-import { action as destroyAction } from "./routes/destroy";
-import Index from "./routes/index";
-import Layout from "./components/layout";
-import IndexClientes from "./routes/clientes/index";
+import Cliente, { loader as clienteLoader } from "./routes/clientes/cliente";
+import EditCliente, { action as editAction } from "./routes/clientes/edit";
+import { action as destroyAction } from "./routes/clientes/destroy";
+import Index from "./routes/clientes/index";
 import IndexDashboard from "./routes/dashboard/index";
 
 export default function Main() {
@@ -29,7 +20,7 @@ export default function Main() {
       errorElement: <ErrorPage />,
     },
     {
-      path: "contacts",
+      path: "clientes",
       element: <Root />,
       errorElement: <ErrorPage />,
       loader: rootLoader,
@@ -39,20 +30,20 @@ export default function Main() {
         { index: true, element: <Index />, errorElement: <ErrorPage /> },
 
         {
-          path: ":contactId",
-          element: <Contact />,
-          loader: contactLoader,
+          path: ":clienteId",
+          element: <Cliente />,
+          loader: clienteLoader,
           errorElement: <ErrorPage />,
         },
         {
-          path: ":contactId/edit",
-          element: <EditContact />,
-          loader: contactLoader,
+          path: ":clienteId/edit",
+          element: <EditCliente />,
+          loader: clienteLoader,
           action: editAction,
           errorElement: <ErrorPage />,
         },
         {
-          path: ":contactId/destroy",
+          path: ":clienteId/destroy",
           action: destroyAction,
           errorElement: <ErrorPage />,
         },

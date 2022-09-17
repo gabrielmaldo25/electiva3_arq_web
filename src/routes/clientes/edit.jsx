@@ -1,23 +1,23 @@
 import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
-import { getContact, updateContact } from "../contacts";
+import { getCliente, updateCliente } from "./clientes";
 
 export function loader({ params }) {
-  return getContact(params.contactId);
+  return getCliente(params.clienteId);
 }
 export async function action({ request, params }) {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
-  await updateContact(params.contactId, updates);
-  return redirect(`/contacts/${params.contactId}`);
+  await updateCliente(params.clienteId, updates);
+  return redirect(`/clientes/${params.clienteId}`);
 }
 export default function Edit() {
-  const contact = useLoaderData();
+  const cliente = useLoaderData();
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-1 bg-zinc-400 flex-col gap-4 p-4 justify-center">
       <h1 className="text-lg text-white font-semibold ">
-        {contact.first ? "EDITAR" : "AGREGAR"}{" "}
+        {cliente.first ? "EDITAR" : "AGREGAR"}{" "}
       </h1>
       <Form method="post" className="flex  flex-col gap-4 ">
         <div className="flex flex-col xl:flex-row gap-4 justify-center">
@@ -26,7 +26,7 @@ export default function Edit() {
             aria-label="First name"
             type="text"
             name="first"
-            defaultValue={contact.first}
+            defaultValue={cliente.first}
             className="flex-1"
           />
           <input
@@ -34,7 +34,7 @@ export default function Edit() {
             aria-label="Last name"
             type="text"
             name="last"
-            defaultValue={contact.last}
+            defaultValue={cliente.last}
             className="flex-1"
           />
         </div>
