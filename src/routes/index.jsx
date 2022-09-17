@@ -3,7 +3,7 @@ export default function Index() {
     <div className="flex items-center">
       <p className="text-gray-500 mx-4 block text-center">
         Selecciona un Cliente para una vista detallada o Nuevo para agregar un
-        nuevo cliente
+        nuevo contact
       </p>
     </div>
   );

@@ -40,13 +40,13 @@ export default function Root() {
   return (
     <Layout>
       <div className="flex flex-1 flex-row">
-        <div id="sidebar" className="flex  flex-col w-3/5 bg-slate-500">
+        <div id="sidebar" className="flex flex-col w-3/5 bg-slate-500">
           <div>
             <Form id="search-form" role="search">
               <input
                 id="q"
                 aria-label="Search contacts"
-                placeholder="Search"
+                placeholder="Buscar"
                 type="search"
                 name="q"
                 defaultValue={q}

@@ -16,13 +16,9 @@ export default function Contact() {
   const contact = useLoaderData();
 
   return (
-    <div id="contact">
-      <div className=" h-5">
-        <img key={contact.avatar} src={contact.avatar || null} />
-      </div>
-
+    <div className="flex flex-1 p-4">
       <div>
-        <h1>
+        <h1 className="text-lg text-white font-medium">
           {contact.first || contact.last ? (
             <>
               {contact.first} {contact.last}
@@ -44,7 +40,7 @@ export default function Contact() {
 
         <div>
           <Form action="edit">
-            <button type="submit">Edit</button>
+            <button type="submit">Editar</button>
           </Form>
           <Form
             method="post"
@@ -55,7 +51,7 @@ export default function Contact() {
               }
             }}
           >
-            <button type="submit">Delete</button>
+            <button type="submit">Eliminar</button>
           </Form>
         </div>
       </div>

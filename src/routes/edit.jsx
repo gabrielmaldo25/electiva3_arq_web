@@ -15,70 +15,89 @@ export default function Edit() {
   const navigate = useNavigate();
 
   return (
-    <Form
-      method="post"
-      /* id="contact-form" */ className="flex flex-1 bg-red-500 flex-col gap-4"
-    >
-      <div className="flex ">
-        <span>Name</span>
-        <div className="flex gap-4">
+    <div className="flex flex-1 bg-zinc-400 flex-col gap-4 p-4 justify-center">
+      <h1 className="text-lg text-white font-semibold ">
+        {contact.first ? "EDITAR" : "AGREGAR"}{" "}
+      </h1>
+      <Form method="post" className="flex  flex-col gap-4 ">
+        <div className="flex flex-col xl:flex-row gap-4 justify-center">
           <input
-            placeholder="First"
+            placeholder="Nombre"
             aria-label="First name"
             type="text"
             name="first"
             defaultValue={contact.first}
+            className="flex-1"
           />
           <input
-            placeholder="Last"
+            placeholder="Apellido"
             aria-label="Last name"
             type="text"
             name="last"
             defaultValue={contact.last}
+            className="flex-1"
           />
         </div>
-      </div>
-      <div className="flex ">
-        <span>Twitter</span>
-        <input
-          type="text"
-          name="twitter"
-          placeholder="@jack"
-          defaultValue={contact.twitter}
-          className="flex flex-grow"
-        />
-      </div>
-      <div className="flex ">
-        <span>Avatar URL</span>
-        <input
-          placeholder="https://example.com/avatar.jpg"
-          aria-label="Avatar URL"
-          type="text"
-          name="avatar"
-          defaultValue={contact.avatar}
-          className="flex flex-grow"
-        />
-      </div>
-      <div className="flex">
-        <span>Notes</span>
-        <textarea
-          name="notes"
-          defaultValue={contact.notes}
-          rows={6}
-          className="flex flex-grow"
-        />
-      </div>
-      <p>
-        <button type="submit">Save</button>
-        <button
-          type="button"
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          Cancel
-        </button>
-      </p>
-    </Form>
+        <div className="flex flex-col xl:flex-row gap-4 justify-center">
+          <div className="flex flex-col flex-1">
+            <span>Tipo de documento</span>
+            <select id="countries" class=" text-sm rounded-lg p-2.5 ">
+              <option selected>Seleccionar</option>
+              <option value="ci">CI</option>
+              <option value="ruc">RUC</option>
+            </select>
+          </div>
+          <div className="flex flex-col flex-1">
+            <span>Numero de documento</span>
+            <input type="text" name="twitter" placeholder="Nro" />
+          </div>
+        </div>
+        <div className="flex flex-col xl:flex-row gap-4 justify-center">
+          <div className="flex flex-col flex-1">
+            <span>Email</span>
+            <input
+              className="flex flex-1 w-full"
+              type="text"
+              name="twitter"
+              placeholder="mail@example.com"
+            />
+          </div>
+          <div className="flex flex-col flex-1">
+            <span>Telefono</span>
+            <input
+              className="flex flex-1 w-full"
+              type="text"
+              name="twitter"
+              placeholder="Numero de telefono"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col lg:flex-row gap-4 justify-center">
+          <div className=" flex-1">
+            <span>Fecha de Nacimiento</span>
+          </div>
+          <div className="flex-1">
+            <input
+              className="w-full"
+              type="date"
+              name="twitter"
+              placeholder="Seleccionar"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-4 justify-center">
+          <button type="submit">Guardar</button>
+          <button
+            type="button"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
+      </Form>
+    </div>
   );
 }
