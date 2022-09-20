@@ -12,9 +12,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link } from "react-router-dom";
 
-const pages = ["Dashboard", "Clientes", "Puntos"];
+const pages = [
+  { href: "/", name: "Dashboard" },
+  { href: "/clientes", name: "Clientes" },
+  { href: "/puntos", name: "Puntos" },
+];
 
+/* const pages = ["Products", "Pricing", "Blog"];
+ */
 export default function Layout({ children }) {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -94,8 +101,8 @@ export default function Layout({ children }) {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem key={page.name}>
+                    <Link to={page.href}>{page.name}</Link>
                   </MenuItem>
                 ))}
               </Menu>
@@ -122,21 +129,18 @@ export default function Layout({ children }) {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
+                  key={page.name}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page}
+                  <Link to={page.href}>{page.name}</Link>
                 </Button>
               ))}
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      <div className="bg-black h-screen">
-        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-black flex-1">
-          {children}
-        </main>
+      <div className="bg-black flex flex-1 py-6 sm:px-6 lg:px-8">
+        {children}
       </div>
     </div>
   );
