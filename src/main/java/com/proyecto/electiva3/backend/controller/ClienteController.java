@@ -29,7 +29,9 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente create(@RequestBody Cliente objeto) {
+    public Cliente create(@RequestBody ClienteDTO objetoDTO) {
+        Cliente objeto = new Cliente();
+        clienteService.convertToDTO(objeto, objetoDTO);
         return clienteService.create(objeto);
     }
 
