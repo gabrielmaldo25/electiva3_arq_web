@@ -20,8 +20,7 @@ export async function loader({ request }) {
 }
 
 export async function action() {
-  const cliente = await createCliente();
-  return redirect(`/clientes/${cliente.id}/edit`);
+  return redirect(`/clientes/new`);
 }
 
 export default function Root() {
@@ -66,22 +65,21 @@ export default function Root() {
             {clientes.length ? (
               <ul>
                 {clientes.map((cliente) => (
-                  <li key={cliente.id}>
+                  <li key={cliente.idCliente}>
                     <NavLink
-                      to={`${cliente.id}`}
+                      to={`${cliente.idCliente}`}
                       className={({ isActive, isPending }) =>
                         isActive ? "active" : isPending ? "pending" : ""
                       }
                     >
-                      <Link to={`${cliente.id}`}>
-                        {cliente.first || cliente.last ? (
+                      <Link to={`${cliente.idCliente}`}>
+                        {cliente.nombre || cliente.apellido ? (
                           <>
-                            {cliente.first} {cliente.last}
+                            {cliente.nombre} {cliente.apellido}
                           </>
                         ) : (
                           <i>No Name</i>
                         )}{" "}
-                        {cliente.favorite && <span>★</span>}
                       </Link>
                     </NavLink>
                   </li>

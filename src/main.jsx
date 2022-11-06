@@ -31,20 +31,27 @@ export default function Main() {
         { index: true, element: <Index />, errorElement: <ErrorPage /> },
 
         {
-          path: ":clienteId",
+          path: ":idCliente",
           element: <Cliente />,
           loader: clienteLoader,
           errorElement: <ErrorPage />,
         },
         {
-          path: ":clienteId/edit",
+          path: ":idCliente/edit",
           element: <EditCliente />,
           loader: clienteLoader,
           action: editAction,
           errorElement: <ErrorPage />,
         },
         {
-          path: ":clienteId/destroy",
+          path: "new",
+          element: <EditCliente />,
+          loader: clienteLoader,
+          action: editAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: ":idCliente/destroy",
           action: destroyAction,
           errorElement: <ErrorPage />,
         },
@@ -54,7 +61,7 @@ export default function Main() {
       path: "puntos",
       element: <IndexPuntos />,
       errorElement: <ErrorPage />,
-    }
+    },
   ]);
   return <RouterProvider router={router} />;
 }

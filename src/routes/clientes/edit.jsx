@@ -1,14 +1,21 @@
 import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
-import { getCliente, updateCliente } from "./clientes";
+import { getCliente, updateCliente, createCliente } from "./clientes";
 
 export function loader({ params }) {
-  return getCliente(params.clienteId);
+  if (params.idCliente) return getCliente(params.idCliente);
+  else return [];
 }
 export async function action({ request, params }) {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
-  await updateCliente(params.clienteId, updates);
-  return redirect(`/clientes/${params.clienteId}`);
+  let res;
+  if (params.idCliente) {
+    await updateCliente(params.idCliente, updates);
+  } else {
+    res = await createCliente(updates);
+    return redirect(`/clientes/${res.idCliente}`);
+  }
+  return redirect(`/clientes/${params.idCliente}`);
 }
 export default function Edit() {
   const cliente = useLoaderData();
@@ -17,24 +24,24 @@ export default function Edit() {
   return (
     <div className="flex flex-1 bg-zinc-400 flex-col gap-4 p-4 justify-center">
       <h1 className="text-lg text-white font-semibold ">
-        {cliente.first ? "EDITAR" : "AGREGAR"}{" "}
+        {cliente?.nombre ? "EDITAR" : "AGREGAR"}{" "}
       </h1>
       <Form method="post" className="flex  flex-col gap-4 ">
         <div className="flex flex-col xl:flex-row gap-4 justify-center">
           <input
             placeholder="Nombre"
-            aria-label="First name"
+            aria-label="nombre"
             type="text"
-            name="first"
-            defaultValue={cliente.first}
+            name="nombre"
+            defaultValue={cliente?.nombre}
             className="flex-1"
           />
           <input
             placeholder="Apellido"
-            aria-label="Last name"
+            aria-label="apellido"
             type="text"
-            name="last"
-            defaultValue={cliente.last}
+            name="apellido"
+            defaultValue={cliente?.apellido}
             className="flex-1"
           />
         </div>
@@ -49,7 +56,12 @@ export default function Edit() {
           </div>
           <div className="flex flex-col flex-1">
             <span>Numero de documento</span>
-            <input type="text" name="twitter" placeholder="Nro" />
+            <input
+              type="text"
+              placeholder="Nro"
+              name="nroDocumento"
+              defaultValue={cliente?.nroDocumento}
+            />
           </div>
         </div>
         <div className="flex flex-col xl:flex-row gap-4 justify-center">
@@ -58,8 +70,9 @@ export default function Edit() {
             <input
               className="flex flex-1 w-full"
               type="text"
-              name="twitter"
+              name="email"
               placeholder="mail@example.com"
+              defaultValue={cliente?.email}
             />
           </div>
           <div className="flex flex-col flex-1">
@@ -67,8 +80,9 @@ export default function Edit() {
             <input
               className="flex flex-1 w-full"
               type="text"
-              name="twitter"
+              name="telefono"
               placeholder="Numero de telefono"
+              defaultValue={cliente?.telefono}
             />
           </div>
         </div>
@@ -80,8 +94,9 @@ export default function Edit() {
             <input
               className="w-full"
               type="date"
-              name="twitter"
+              name="fechaNac"
               placeholder="Seleccionar"
+              defaultValue={cliente?.fechaNac}
             />
           </div>
         </div>

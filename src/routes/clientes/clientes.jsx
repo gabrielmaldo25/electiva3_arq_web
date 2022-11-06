@@ -3,51 +3,74 @@ import { matchSorter } from "match-sorter";
 import sortBy from "sort-by";
 
 export async function getClientes(query) {
-  await fakeNetwork(`getClientes:${query}`);
-  let clientes = await localforage.getItem("clientes");
-  if (!clientes) clientes = [];
-  if (query) {
-    clientes = matchSorter(clientes, query, { keys: ["first", "last"] });
+  let clientes;
+  try {
+    let res = await fetch(`/api/clientes`);
+    clientes = await res.json();
+  } catch (error) {
+    console.log("ERROR; ", error);
   }
-  return clientes.sort(sortBy("last", "createdAt"));
+  if (!clientes) clientes = [];
+
+  return clientes;
 }
 
-export async function createCliente() {
-  await fakeNetwork();
-  let id = Math.random().toString(36).substring(2, 9);
-  let cliente = { id, createdAt: Date.now() };
-  let clientes = await getClientes();
-  clientes.unshift(cliente);
-  await set(clientes);
+export async function createCliente(payload) {
+  let cliente;
+  try {
+    let res = await fetch(`/api/clientes`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json" },
+    });
+    cliente = await res.json();
+  } catch (error) {
+    console.log("ERROR; ", error);
+  }
+  if (!cliente) throw new Error("No se pudo crear");
+
   return cliente;
 }
 
 export async function getCliente(id) {
-  await fakeNetwork(`cliente:${id}`);
-  let clientes = await localforage.getItem("clientes");
-  let cliente = clientes.find(cliente => cliente.id === id);
-  return cliente ?? null;
+  let cliente;
+  try {
+    let res = await fetch(`/api/clientes/${id}`);
+    cliente = await res.json();
+  } catch (error) {
+    console.log("ERROR; ", error);
+  }
+  if (!cliente) cliente = [];
+
+  return cliente;
 }
 
 export async function updateCliente(id, updates) {
-  await fakeNetwork();
-  let clientes = await localforage.getItem("clientes");
-  let cliente = clientes.find(cliente => cliente.id === id);
+  let cliente;
+  try {
+    let res = await fetch(`/api/clientes/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(updates),
+      headers: { "Content-Type": "application/json" },
+    });
+    cliente = await res.json();
+  } catch (error) {
+    console.log("ERROR; ", error);
+  }
   if (!cliente) throw new Error("No cliente found for", id);
-  Object.assign(cliente, updates);
-  await set(clientes);
+
   return cliente;
 }
 
 export async function deleteCliente(id) {
-  let clientes = await localforage.getItem("clientes");
-  let index = clientes.findIndex(cliente => cliente.id === id);
-  if (index > -1) {
-    clientes.splice(index, 1);
-    await set(clientes);
-    return true;
+  try {
+    await fetch(`/api/clientes/${id}`, {
+      method: "DELETE",
+    });
+  } catch (error) {
+    console.log("ERROR AL ELIMINAR ", error);
   }
-  return false;
+  return;
 }
 
 function set(clientes) {
@@ -67,7 +90,7 @@ async function fakeNetwork(key) {
   }
 
   fakeCache[key] = true;
-  return new Promise(res => {
+  return new Promise((res) => {
     setTimeout(res, Math.random() * 800);
   });
 }
