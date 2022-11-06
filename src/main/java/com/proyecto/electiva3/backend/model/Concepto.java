@@ -11,13 +11,13 @@ import javax.persistence.*;
 @Table(name = "concepto")
 public class Concepto {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "idConcepto", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idConcepto;
+    private Long idConcepto;
 
     @Column(name = "descripcion", length = 100, nullable = false)
-    String descripcion;
+    private String descripcion;
 
     @Column(name = "puntos", nullable = false, columnDefinition = "NUMERIC(12,2)")
-    Float puntos;
+    private Float puntos;
 }

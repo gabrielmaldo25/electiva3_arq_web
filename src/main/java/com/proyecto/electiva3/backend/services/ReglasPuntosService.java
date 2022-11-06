@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ReglasPuntosServices {
+public class ReglasPuntosService {
     @Autowired
     private ReglasPuntosRepository reglasRepository;
 

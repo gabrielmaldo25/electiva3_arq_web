@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -12,25 +14,29 @@ import java.time.LocalDate;
 @Table(name = "cliente")
 public class Cliente {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "idCliente", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idCliente;
+    private Long idCliente;
 
     @Column(name = "nombre", length = 50, nullable = false)
-    String nombre;
+    private String nombre;
 
     @Column(name = "apellido", length = 50, nullable = false)
-    String apellido;
+    private String apellido;
 
     @Column(name = "nro_documento", length = 15, nullable = false)
-    String nroDocumento;
+    private String nroDocumento;
 
     @Column(name = "email", length = 50, nullable = false)
-    String email;
+    private String email;
 
     @Column(name = "telefono", length = 20, nullable = false)
-    String telefono;
+    private String telefono;
 
     @Column(name = "fecha_nac")
-    LocalDate fechaNac;
+    private LocalDate fechaNac;
+
+    // relacion con BolsaPuntos
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private Set<BolsaPuntos> bolsas = new HashSet<>();
 }

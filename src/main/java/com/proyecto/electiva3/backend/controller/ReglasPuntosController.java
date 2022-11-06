@@ -2,7 +2,7 @@ package com.proyecto.electiva3.backend.controller;
 
 import com.proyecto.electiva3.backend.model.DTO.ReglasPuntosDTO;
 import com.proyecto.electiva3.backend.model.ReglasPuntos;
-import com.proyecto.electiva3.backend.services.ReglasPuntosServices;
+import com.proyecto.electiva3.backend.services.ReglasPuntosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/reglas")
 public class ReglasPuntosController {
     @Autowired
-    private ReglasPuntosServices reglasService;
+    private ReglasPuntosService reglasService;
 
     @GetMapping
     public List<ReglasPuntos> findAll() {
