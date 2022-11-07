@@ -11,9 +11,4 @@ import java.util.List;
 @Repository
 public interface BolsaPuntosRepository extends JpaRepository<BolsaPuntos, Long> {
     public List<BolsaPuntos> findByClienteOrderByFechaCaducidad(Cliente cliente);
-    //public List<BolsaPuntos> findByClienteAndPuntosSaldoGreaterThanOrderByFechaCaducidad(Cliente cliente, Float mayorQue);
-
-    @Query(value = "SELECT SUM(cliente.puntosSaldo) puntosSaldo \n" +
-                   "FROM bolsa_puntos", nativeQuery = true)
-    public Float findSumBolsaPuntos(Cliente cliente);
 }

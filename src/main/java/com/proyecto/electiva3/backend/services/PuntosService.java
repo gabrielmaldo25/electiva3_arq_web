@@ -31,7 +31,7 @@ public class PuntosService {
     /* Registrar puntos a un cliente */
     public void registrarPuntos(Long idCliente, Float monto) throws Exception {
         Cliente cliente = clienteService.findById(idCliente);
-        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteInferiorGreaterThanEqualAndLimiteSuperiorLessThanEqual(monto, monto);
+        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(monto, monto);
         ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
 
         if(cliente == null) {
@@ -39,7 +39,7 @@ public class PuntosService {
         }
 
         if(regla == null) {
-            regla = reglasPuntosRepository.findTopByLimiteInferiorGreaterThanEqualAndLimiteSuperiorLessThanEqual(null, null);
+            regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(null, null);
         }
 
         if (regla == null) {
@@ -74,8 +74,8 @@ public class PuntosService {
         Cliente cliente = clienteService.findById(idCliente);
         Concepto concepto = conceptoService.findById(idConcepto);
         List<BolsaPuntos> bolsaPuntos = new ArrayList<>();
-        Float puntosDisp;
-        Float saldoPuntos;
+        Float puntosDisp = 0f;
+        Float puntosConcepto = 0f;
 
         if(cliente == null) {
             throw new Exception("El cliente no se encuentra en la base de datos.");
@@ -85,24 +85,27 @@ public class PuntosService {
             throw new Exception("El concepto no se encuentra en la base de datos.");
         }
 
-        puntosDisp = bolsaPuntosRepository.findSumBolsaPuntos(cliente);
-        if(puntosDisp == null || puntosDisp < concepto.getPuntos()) {
-            throw new Exception("El cliente suficientes suficiente puntos.");
+        bolsaPuntos = bolsaPuntosRepository.findByClienteOrderByFechaCaducidad(cliente);
+        for (BolsaPuntos bolsa : bolsaPuntos) {
+            puntosDisp += bolsa.getPuntosSaldo();
+        }
+
+        if(puntosDisp == 0f || puntosDisp < concepto.getPuntos()) {
+            throw new Exception("El cliente no cuenta con suficientes puntos.");
         }
 
         // si existe suficientes puntos, descontar de las bolsas
-        saldoPuntos = concepto.getPuntos();
-        bolsaPuntos = bolsaPuntosRepository.findByClienteOrderByFechaCaducidad(cliente);
+        puntosConcepto = concepto.getPuntos();
         for(BolsaPuntos bolsa : bolsaPuntos) {
-            if(bolsa.getPuntosSaldo() >= saldoPuntos) {
-                bolsa.setPuntosUsados(bolsa.getPuntosUsados() + saldoPuntos);
-                bolsa.setPuntosSaldo(bolsa.getPuntosSaldo() - saldoPuntos);
+            if(bolsa.getPuntosSaldo() > puntosConcepto) {
+                bolsa.setPuntosUsados(bolsa.getPuntosUsados() + puntosConcepto);
+                bolsa.setPuntosSaldo(bolsa.getPuntosSaldo() - puntosConcepto);
                 bolsaPuntosRepository.save(bolsa);
                 break;
             } else {
-                saldoPuntos -= bolsa.getPuntosSaldo();
-                //bolsa.setPuntosUsados(bolsa.getPuntosUsados() + bolsa.getPuntosSaldo());
-                //bolsa.setPuntosSaldo(0f);
+                puntosConcepto -= bolsa.getPuntosSaldo();
+                bolsa.setPuntosUsados(bolsa.getPuntosUsados() + bolsa.getPuntosSaldo());
+                bolsa.setPuntosSaldo(0f);
                 bolsaPuntosRepository.delete(bolsa);
             }
         }
