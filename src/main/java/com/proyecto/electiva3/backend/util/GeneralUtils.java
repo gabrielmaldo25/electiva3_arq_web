@@ -7,7 +7,7 @@ public class GeneralUtils {
     public final static String DATE_FORMAT = "yyyy-MM-dd";
 
     /* Convertir string a fecha */
-    public static String getStringToDate(LocalDate date) {
+    public static String getStringFromDate(LocalDate date) {
         try {
             return date.format(DateTimeFormatter.ofPattern(DATE_FORMAT));
         } catch (Exception e) {
@@ -17,7 +17,7 @@ public class GeneralUtils {
     }
 
     /* Convertir fecha a string */
-    public static LocalDate getDateToString(String date) {
+    public static LocalDate getDateFromString(String date) {
         try {
             return LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT));
         } catch (Exception e) {
