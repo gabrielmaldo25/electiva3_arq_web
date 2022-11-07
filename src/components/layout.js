@@ -17,7 +17,8 @@ import { Link } from "react-router-dom";
 const pages = [
   { href: "/", name: "Dashboard" },
   { href: "/clientes", name: "Clientes" },
-  { href: "/puntos", name: "Puntos" },
+  { href: "/reglas", name: "Reglas" },
+  { href: "/conceptos", name: "Conceptos" },
 ];
 
 /* const pages = ["Products", "Pricing", "Blog"];

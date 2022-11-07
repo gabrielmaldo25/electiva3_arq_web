@@ -114,7 +114,7 @@ export default function Index() {
           <section>
             <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
               <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-white">Puntos</h1>
+                <h1 className="text-3xl font-bold text-white">Todos los puntos por cliente</h1>
                 <a
                   className="hover:bg-green-600 group flex items-center rounded-md bg-green-800 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
                   onClick={() => setOpen(true)}

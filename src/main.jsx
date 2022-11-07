@@ -11,7 +11,16 @@ import EditCliente, { action as editAction } from "./routes/clientes/edit";
 import { action as destroyAction } from "./routes/clientes/destroy";
 import Index from "./routes/clientes/index";
 import IndexDashboard from "./routes/dashboard/index";
-import IndexPuntos from "./routes/puntos/index";
+import IndexReglas from "./routes/reglas/index";
+import IndexConceptos, {
+  action as conceptoRootAction,
+  loader as conceptoRootLoader,
+} from "./routes/conceptos/index";
+import ABMConcepto, {
+  loader as conceptoLoader,
+  action as conceptoAction,
+} from "./routes/conceptos/abmConcepto";
+import { action as destroyConcepto } from "./routes/conceptos/destroy";
 
 export default function Main() {
   const router = createBrowserRouter([
@@ -58,9 +67,37 @@ export default function Main() {
       ],
     },
     {
-      path: "puntos",
-      element: <IndexPuntos />,
+      path: "reglas",
+      element: <IndexReglas />,
       errorElement: <ErrorPage />,
+    },
+    {
+      path: "conceptos",
+      element: <IndexConceptos />,
+      errorElement: <ErrorPage />,
+      action: conceptoRootAction,
+      loader: conceptoRootLoader,
+      children: [
+        {
+          path: ":idConcepto/edit",
+          element: <ABMConcepto />,
+          loader: conceptoLoader,
+          action: conceptoAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "new",
+          element: <ABMConcepto />,
+          loader: conceptoLoader,
+          action: conceptoAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: ":idConcepto/edit/destroy",
+          action: destroyConcepto,
+          errorElement: <ErrorPage />,
+        },
+      ],
     },
   ]);
   return <RouterProvider router={router} />;
