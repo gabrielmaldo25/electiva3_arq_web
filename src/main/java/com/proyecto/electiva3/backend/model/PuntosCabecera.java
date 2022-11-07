@@ -21,7 +21,7 @@ public class PuntosCabecera {
     @Column(name = "puntaje_utilizado", nullable = false, columnDefinition = "NUMERIC(12,2)")
     private Float puntajeUtilizado;
 
-    @Column(name = "fecha")
+    @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
     // relationship with Cliente
