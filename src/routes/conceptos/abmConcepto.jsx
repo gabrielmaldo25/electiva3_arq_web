@@ -2,7 +2,12 @@ import React from "react";
 import { useEffect } from "react";
 
 import { Form, useNavigate, useLoaderData, redirect } from "react-router-dom";
-import { createConcepto, updateConcepto, getConcepto } from "./conceptos";
+import {
+  createConcepto,
+  updateConcepto,
+  getConcepto,
+  deleteConcepto,
+} from "./conceptos";
 
 export function loader({ params }) {
   if (params.idConcepto) return getConcepto(params.idConcepto);
@@ -18,6 +23,11 @@ export async function action({ request, params }) {
     res = await createConcepto(updates);
   }
   return redirect(`/conceptos`);
+}
+
+export async function destroyConcepto({ params }) {
+  await deleteConcepto(params.idConcepto);
+  return redirect("/conceptos");
 }
 
 export default function ABMConcepto({ open, setOpen }) {

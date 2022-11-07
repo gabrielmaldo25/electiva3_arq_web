@@ -19,8 +19,8 @@ import IndexConceptos, {
 import ABMConcepto, {
   loader as conceptoLoader,
   action as conceptoAction,
+  destroyConcepto,
 } from "./routes/conceptos/abmConcepto";
-import { action as destroyConcepto } from "./routes/conceptos/destroy";
 
 export default function Main() {
   const router = createBrowserRouter([
