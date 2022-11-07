@@ -21,7 +21,7 @@ public class ClienteService {
         objeto.setNroDocumento(objetoDTO.getNroDocumento());
         objeto.setEmail(objetoDTO.getEmail());
         objeto.setTelefono(objetoDTO.getTelefono());
-        objeto.setFechaNac(GeneralUtils.getDateToString(objetoDTO.getFechaNac()));
+        objeto.setFechaNac(GeneralUtils.getDateFromString(objetoDTO.getFechaNac()));
     }
 
     public Cliente create(Cliente objeto) {
