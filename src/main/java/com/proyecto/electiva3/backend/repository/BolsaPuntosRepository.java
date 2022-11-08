@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface BolsaPuntosRepository extends JpaRepository<BolsaPuntos, Long> {
     public List<BolsaPuntos> findByClienteOrderByFechaCaducidad(Cliente cliente);
+    public List<BolsaPuntos> findByCliente(Cliente cliente);
+    public List<BolsaPuntos> findByPuntosBetween(Float min, Float max);
 }
