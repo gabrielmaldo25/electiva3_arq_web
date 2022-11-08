@@ -20,12 +20,15 @@ import {
   IconButton,
   TableHead,
 } from "@mui/material";
-import ABMRegla from "../../components/abmRegla";
-
-const puntos = [
-  { monto: 50000, puntos: 5, vence: 25 },
-  { monto: 80000, puntos: 8, vence: 20 },
-];
+import {
+  Form,
+  redirect,
+  Outlet,
+  useOutlet,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
+import { getReglas } from "./reglas";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -89,6 +92,17 @@ function TablePaginationActions(props) {
   );
 }
 
+export async function action() {
+  return redirect(`/reglas/new`);
+}
+
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+  const reglas = await getReglas(q);
+  return { reglas, q };
+}
+
 export default function Index() {
   /* Parte de la tabla */
   const [page, setPage] = useState(0);
@@ -96,7 +110,7 @@ export default function Index() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - puntos.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - reglas.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -109,139 +123,150 @@ export default function Index() {
 
   /* *** */
 
-  const [open, setOpen] = useState(false);
-
+  const outlet = useOutlet();
+  const { reglas, q } = useLoaderData();
+  const navigate = useNavigate();
   return (
     <Layout>
       <div className="flex-1">
-        <div>
-          <section>
-            <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
-              <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-white">Reglas</h1>
-                <a
-                  className="hover:bg-green-600 group flex items-center rounded-md bg-green-800 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
-                  onClick={() => setOpen(true)}
-                >
+        {!outlet && (
+          <div>
+            <section>
+              <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-3xl font-bold text-white">Reglas</h1>
+                  <Form method="post">
+                    <button
+                      className="hover:bg-green-600 group flex items-center rounded-md bg-green-800 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+                      method="post"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        fill="currentColor"
+                        className="mr-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
+                      </svg>
+                      Agregar Regla
+                    </button>
+                  </Form>
+                </div>
+                <form className="group relative">
                   <svg
                     width="20"
                     height="20"
                     fill="currentColor"
-                    className="mr-2"
+                    className="absolute left-3 top-1/2 -mt-2.5 text-gray-900 pointer-events-none group-focus-within:text-green-400"
                     aria-hidden="true"
                   >
-                    <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
-                  </svg>
-                  Agregar Regla
-                </a>
-              </div>
-              <form className="group relative">
-                <svg
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="absolute left-3 top-1/2 -mt-2.5 text-gray-900 pointer-events-none group-focus-within:text-green-400"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  />
-                </svg>
-                <input
-                  className="focus:ring-2 focus:ring-green-400 focus:outline-none appearance-none w-full text-sm leading-6 text-gray-900 placeholder-gray-900 rounded-md py-2 pl-10 ring-1 ring-sand-300 shadow-sm bg-sand-300"
-                  type="text"
-                  aria-label="Buscar"
-                  placeholder="Buscar..."
-                />
-              </form>
-            </header>
-
-            <TableContainer component={Paper}>
-              <Table
-                aria-label="custom pagination table"
-                className="p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6"
-              >
-                <TableHead className="bg-green-800">
-                  <TableRow>
-                    {/* <TableCell className="text-white">id</TableCell> */}
-                    <TableCell className="text-white">Monto</TableCell>
-                    <TableCell className="text-white">
-                      Puntos por monto
-                    </TableCell>
-                    <TableCell className="text-white">
-                      Validez en días
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(rowsPerPage > 0
-                    ? puntos.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                    : puntos
-                  ).map((row) => (
-                    <TableRow
-                      key={row.id_user}
-                      className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
-                      onClick={() => {
-                        setUsuario(row);
-                        setOpen(true);
-                      }}
-                    >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        className="text-sand-300 hover:text-gray-900"
-                      >
-                        {row.monto}
-                      </TableCell>
-                      <TableCell className="text-sand-300 hover:text-gray-900">
-                        {row.puntos}
-                      </TableCell>
-                      <TableCell className="text-sand-300 hover:text-gray-900">
-                        {row.vence}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                <TableFooter className="bg-green-800">
-                  <TableRow>
-                    <TablePagination
-                      rowsPerPageOptions={[
-                        5,
-                        10,
-                        25,
-                        { label: "All", value: -1 },
-                      ]}
-                      colSpan={6}
-                      count={puntos.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      SelectProps={{
-                        inputProps: {
-                          "aria-label": "rows per page",
-                        },
-                        native: true,
-                      }}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                      ActionsComponent={TablePaginationActions}
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                     />
-                  </TableRow>
-                </TableFooter>
-              </Table>
-            </TableContainer>
-            {open && <ABMRegla open={open} setOpen={setOpen} />}
-          </section>
-        </div>
+                  </svg>
+                  <input
+                    className="focus:ring-2 focus:ring-green-400 focus:outline-none appearance-none w-full text-sm leading-6 text-gray-900 placeholder-gray-900 rounded-md py-2 pl-10 ring-1 ring-sand-300 shadow-sm bg-sand-300"
+                    type="text"
+                    aria-label="Buscar"
+                    placeholder="Buscar..."
+                  />
+                </form>
+              </header>
+
+              <TableContainer component={Paper}>
+                <Table
+                  aria-label="custom pagination table"
+                  className="p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6"
+                >
+                  <TableHead className="bg-green-800">
+                    <TableRow>
+                      <TableCell className="text-white">id</TableCell>
+                      <TableCell className="text-white">
+                        Limite Inferior
+                      </TableCell>
+                      <TableCell className="text-white">
+                        Limite Superior
+                      </TableCell>
+                      <TableCell className="text-white">Puntos </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {(rowsPerPage > 0
+                      ? reglas.slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                      : reglas
+                    ).map((row) => (
+                      <TableRow
+                        key={row.idRegla}
+                        className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
+                        onClick={() => {
+                          navigate(`/reglas/${row.idRegla}/edit`);
+                        }}
+                      >
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          className="text-sand-300 hover:text-gray-900"
+                        >
+                          {row.idRegla}
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          className="text-sand-300 hover:text-gray-900"
+                        >
+                          {row.limiteInferior}
+                        </TableCell>
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.limiteSuperior}
+                        </TableCell>
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.monto}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                  <TableFooter className="bg-green-800">
+                    <TableRow>
+                      <TablePagination
+                        rowsPerPageOptions={[
+                          5,
+                          10,
+                          25,
+                          { label: "All", value: -1 },
+                        ]}
+                        colSpan={6}
+                        count={reglas.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        SelectProps={{
+                          inputProps: {
+                            "aria-label": "rows per page",
+                          },
+                          native: true,
+                        }}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        ActionsComponent={TablePaginationActions}
+                      />
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </TableContainer>
+            </section>
+          </div>
+        )}
+        <Outlet />
       </div>
     </Layout>
   );

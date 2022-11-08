@@ -20,7 +20,6 @@ import {
   IconButton,
   TableHead,
 } from "@mui/material";
-import ABMRegla from "../../components/abmRegla";
 import {
   redirect,
   Outlet,
@@ -30,10 +29,6 @@ import {
 } from "react-router-dom";
 import { Form } from "react-router-dom/dist";
 import { getConceptos } from "./conceptos";
-/* const conceptos = [
-  { monto: 50000, conceptos: 5, vence: 25 },
-  { monto: 80000, conceptos: 8, vence: 20 },
-]; */
 
 function TablePaginationActions(props) {
   const theme = useTheme();

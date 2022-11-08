@@ -11,7 +11,10 @@ import EditCliente, { action as editAction } from "./routes/clientes/edit";
 import { action as destroyAction } from "./routes/clientes/destroy";
 import Index from "./routes/clientes/index";
 import IndexDashboard from "./routes/dashboard/index";
-import IndexReglas from "./routes/reglas/index";
+import IndexReglas, {
+  action as reglaRootAction,
+  loader as reglaRootLoader,
+} from "./routes/reglas/index";
 import IndexConceptos, {
   action as conceptoRootAction,
   loader as conceptoRootLoader,
@@ -21,6 +24,12 @@ import ABMConcepto, {
   action as conceptoAction,
   destroyConcepto,
 } from "./routes/conceptos/abmConcepto";
+
+import ABMRegla, {
+  loader as reglaLoader,
+  action as reglaAction,
+  destroyRegla,
+} from "./routes/reglas/abmRegla";
 
 export default function Main() {
   const router = createBrowserRouter([
@@ -70,7 +79,31 @@ export default function Main() {
       path: "reglas",
       element: <IndexReglas />,
       errorElement: <ErrorPage />,
+      action: reglaRootAction,
+      loader: reglaRootLoader,
+      children: [
+        {
+          path: ":idRegla/edit",
+          element: <ABMRegla />,
+          loader: reglaLoader,
+          action: reglaAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "new",
+          element: <ABMRegla />,
+          loader: reglaLoader,
+          action: reglaAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: ":idRegla/edit/destroy",
+          action: destroyRegla,
+          errorElement: <ErrorPage />,
+        },
+      ],
     },
+
     {
       path: "conceptos",
       element: <IndexConceptos />,
