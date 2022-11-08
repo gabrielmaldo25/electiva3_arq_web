@@ -12,14 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConceptoDTO {
-    private Long idCliente;
+    private Long idConcepto;
     private String descripcion;
     private Float puntos;
 
     public static ConceptoDTO instanciar(Concepto concepto) {
         if(concepto == null) return null;
         ConceptoDTO objeto = new ConceptoDTO();
-        objeto.idCliente = concepto.getIdConcepto();
+        objeto.idConcepto = concepto.getIdConcepto();
         objeto.descripcion = concepto.getDescripcion();
         objeto.puntos = concepto.getPuntos();
         return objeto;
