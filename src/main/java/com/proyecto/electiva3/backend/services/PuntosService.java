@@ -39,27 +39,13 @@ public class PuntosService {
     /* Registrar puntos a un cliente */
     public void registrarPuntos(Long idCliente, Float monto) throws Exception {
         Cliente cliente = clienteService.findById(idCliente);
-        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(monto, monto);
         ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
 
         if(cliente == null) {
             throw new Exception("El cliente no se encuentra en la base de datos.");
         }
 
-        if(regla == null) {
-            regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(null, null);
-        }
-
-        if (regla == null) {
-            throw new Exception("No existe regla para este monto.");
-        }
-
-        if(parametrizacionPuntos == null) {
-            throw new Exception("No hay puntos parametrizados disponibles.");
-        }
-
-        Float cantPuntos = monto / regla.getMonto();
-        if(cantPuntos < 0) cantPuntos = 0f;
+        Float cantPuntos = calcularPuntos(monto);
 
         BolsaPuntos bolsaPuntos = new BolsaPuntos();
         bolsaPuntos.setCliente(cliente);
@@ -142,6 +128,28 @@ public class PuntosService {
         System.out.println("Puntos utilizados exitosamente");
 
         return;
+    }
+
+    public Float calcularPuntos(Float monto) throws Exception {
+        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(monto, monto);
+        ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
+
+        if(regla == null) {
+            regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(null, null);
+        }
+
+        if (regla == null) {
+            throw new Exception("No existe regla para este monto.");
+        }
+
+        if(parametrizacionPuntos == null) {
+            throw new Exception("No hay puntos parametrizados disponibles.");
+        }
+
+        Float cantPuntos = monto / regla.getMonto();
+        if(cantPuntos < 0) cantPuntos = 0f;
+
+        return cantPuntos;
     }
 
 }

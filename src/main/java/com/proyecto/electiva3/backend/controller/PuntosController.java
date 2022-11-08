@@ -56,4 +56,10 @@ public class PuntosController {
         puntosService.usarPuntos(objetoDTO.getIdCliente(), objetoDTO.getIdConcepto());
     }
 
+    @GetMapping("/equivalente-puntos")
+    public Float calcularPuntos(@RequestParam Float monto) throws Exception {
+        Float puntos = puntosService.calcularPuntos(monto);
+        return puntos;
+    }
+
 }

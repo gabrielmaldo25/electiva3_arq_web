@@ -1,6 +1,7 @@
 package com.proyecto.electiva3.backend.model.DTO;
 
 
+import com.proyecto.electiva3.backend.model.ReglasPuntos;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,11 @@ public class ReglasPuntosDTO {
     private Float limiteInferior;
     private Float limiteSuperior;
     private Float monto;
+
+    public void convertir(ReglasPuntos reglasPuntos) {
+        this.idRegla = reglasPuntos.getIdRegla();
+        this.limiteInferior = reglasPuntos.getLimiteInferior();
+        this.limiteSuperior = reglasPuntos.getLimiteSuperior();
+        this.monto = reglasPuntos.getMonto();
+    }
 }
