@@ -1,6 +1,6 @@
 package com.proyecto.electiva3.backend.controller;
 
-import com.proyecto.electiva3.backend.model.DTO.PuntosDTO;
+import com.proyecto.electiva3.backend.model.DTO.ParamPuntosDTO;
 import com.proyecto.electiva3.backend.model.ParamPuntos;
 import com.proyecto.electiva3.backend.services.ParamPuntosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/parameters")
@@ -17,18 +18,19 @@ public class ParametrizacionController {
     private ParamPuntosService paramPuntosService;
 
     @GetMapping
-    public List<ParamPuntos> findAll() {
-        return (List<ParamPuntos>)paramPuntosService.findAll();
+    public List<ParamPuntosDTO> findAll() {
+        List<ParamPuntos> list = paramPuntosService.findAll();
+        return list.stream().map(punto -> ParamPuntosDTO.instanciar(punto)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ParamPuntos findById(@PathVariable Long id) {
-        return paramPuntosService.findById(id);
+    public ParamPuntosDTO findById(@PathVariable Long id) {
+        return ParamPuntosDTO.instanciar(paramPuntosService.findById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ParamPuntos create(@RequestBody PuntosDTO objetoDTO) {
+    public ParamPuntosDTO create(@RequestBody ParamPuntosDTO objetoDTO) {
         ParamPuntos objeto = new ParamPuntos();
         objetoDTO.setFechaFin(null);
         paramPuntosService.convertToDTO(objeto, objetoDTO);
@@ -38,15 +40,15 @@ public class ParametrizacionController {
             param.setFechaFin(LocalDate.now());
             paramPuntosService.update(param);
         }
-        return paramPuntosService.create(objeto);
+        return ParamPuntosDTO.instanciar(paramPuntosService.create(objeto));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ParamPuntos update(@PathVariable Long id, @RequestBody PuntosDTO objetoDTO) {
+    public ParamPuntosDTO update(@PathVariable Long id, @RequestBody ParamPuntosDTO objetoDTO) {
         ParamPuntos objeto = paramPuntosService.findById(id);
         paramPuntosService.convertToDTO(objeto, objetoDTO);
-        return paramPuntosService.update(objeto);
+        return ParamPuntosDTO.instanciar(paramPuntosService.update(objeto));
     }
 
     @DeleteMapping("/{id}")

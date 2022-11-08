@@ -1,8 +1,7 @@
 package com.proyecto.electiva3.backend.services;
 
-import com.proyecto.electiva3.backend.model.DTO.PuntosDTO;
+import com.proyecto.electiva3.backend.model.DTO.ParamPuntosDTO;
 import com.proyecto.electiva3.backend.model.ParamPuntos;
-import com.proyecto.electiva3.backend.model.ReglasPuntos;
 import com.proyecto.electiva3.backend.repository.ParamPuntosRepository;
 import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ public class ParamPuntosService {
     @Autowired
     private ParamPuntosRepository paramPuntosRepository;
 
-    public void convertToDTO(ParamPuntos objeto, PuntosDTO objetoDTO) {
+    public void convertToDTO(ParamPuntos objeto, ParamPuntosDTO objetoDTO) {
         objeto.setFechaInicio(GeneralUtils.getDateFromString(objetoDTO.getFechaInicio()));
         objeto.setFechaFin(GeneralUtils.getDateFromString(objetoDTO.getFechaFin()));
         objeto.setDuracion(objetoDTO.getDuracion());
