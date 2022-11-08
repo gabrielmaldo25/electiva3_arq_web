@@ -1,18 +1,21 @@
 package com.proyecto.electiva3.backend.controller;
 
 import com.proyecto.electiva3.backend.model.*;
+import com.proyecto.electiva3.backend.model.DTO.ClienteDTO;
 import com.proyecto.electiva3.backend.model.reporte.UsoPuntos;
 import com.proyecto.electiva3.backend.repository.BolsaPuntosRepository;
 import com.proyecto.electiva3.backend.repository.PuntosCabeceraRepository;
 import com.proyecto.electiva3.backend.services.ClienteService;
 import com.proyecto.electiva3.backend.services.ConceptoService;
 import com.proyecto.electiva3.backend.util.GeneralUtils;
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reportes")
@@ -46,6 +49,8 @@ public class ConsultasController {
         } else if(cliente != null) {
             Cliente objeto = clienteService.findById(cliente);
             if(objeto != null) puntos = puntosCabeceraRepository.findByCliente(objeto);
+        } else {
+            puntos = puntosCabeceraRepository.findAll();
         }
 
         if(puntos != null) {
@@ -71,6 +76,8 @@ public class ConsultasController {
             if(objeto != null) bolsas = bolsaPuntosRepository.findByCliente(objeto);
         } else if(inferior != null && superior != null) {
             bolsas = bolsaPuntosRepository.findByPuntosBetween(inferior, superior);
+        } else {
+            bolsas = bolsaPuntosRepository.findAll();
         }
 
         if(bolsas != null) {
@@ -93,6 +100,8 @@ public class ConsultasController {
 
         if(cantDias != null) {
             bolsas = bolsaPuntosRepository.findByFechaCaducidadBetween(LocalDate.now(), LocalDate.now().plusDays(cantDias));
+        } else {
+            bolsas = bolsaPuntosRepository.findAll();
         }
 
         if(bolsas != null) {
@@ -109,7 +118,7 @@ public class ConsultasController {
     }
 
     @GetMapping("/clientes")
-    public List<Cliente> reporteClientes(@RequestParam(required = false) String nombre,
+    public List<ClienteDTO> reporteClientes(@RequestParam(required = false) String nombre,
                                             @RequestParam(required = false) String apellido,
                                             @RequestParam(required = false) String fecha) {
         List<Cliente> list = new ArrayList<>();
@@ -121,15 +130,16 @@ public class ConsultasController {
         } else if(fecha != null) {
             LocalDate date = GeneralUtils.getDateFromString(fecha);
             if(date != null) list = clienteService.findByCumpleanhos(date);
+        } else {
+            list = clienteService.findAll();
         }
 
+        List<ClienteDTO> listClientes = new ArrayList<>();
         if(list != null && !list.isEmpty()) {
-            for(Cliente cliente : list) {
-                cliente.setBolsas(null);
-            }
+            listClientes = list.stream().map(cliente -> ClienteDTO.instanciar(cliente)).collect(Collectors.toList());
         }
 
-        return list;
+        return listClientes;
     }
 
 }
