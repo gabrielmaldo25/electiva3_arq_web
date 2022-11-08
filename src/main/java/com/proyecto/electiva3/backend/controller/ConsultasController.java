@@ -8,10 +8,7 @@ import com.proyecto.electiva3.backend.services.ClienteService;
 import com.proyecto.electiva3.backend.services.ConceptoService;
 import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -88,4 +85,51 @@ public class ConsultasController {
 
         return list;
     }
+
+    @GetMapping("/venc-puntos/{cantDias}")
+    public List<com.proyecto.electiva3.backend.model.reporte.BolsaPuntos> reporteVencPuntos(@PathVariable Integer cantDias) {
+        List<BolsaPuntos> bolsas = new ArrayList<>();
+        List<com.proyecto.electiva3.backend.model.reporte.BolsaPuntos> list = new ArrayList<>();
+
+        if(cantDias != null) {
+            bolsas = bolsaPuntosRepository.findByFechaCaducidadBetween(LocalDate.now(), LocalDate.now().plusDays(cantDias));
+        }
+
+        if(bolsas != null) {
+            for(BolsaPuntos bolsa : bolsas) {
+                String nombre = bolsa.getCliente().getNombre() + " " + bolsa.getCliente().getApellido();
+                list.add(new com.proyecto.electiva3.backend.model.reporte.BolsaPuntos(
+                        bolsa.getFechaAsig(), bolsa.getFechaCaducidad(), bolsa.getMontoOperacion(),
+                        bolsa.getPuntos(), bolsa.getPuntosSaldo(), bolsa.getPuntosUsados(), nombre
+                ));
+            }
+        }
+
+        return list;
+    }
+
+    @GetMapping("/clientes")
+    public List<Cliente> reporteClientes(@RequestParam(required = false) String nombre,
+                                            @RequestParam(required = false) String apellido,
+                                            @RequestParam(required = false) String fecha) {
+        List<Cliente> list = new ArrayList<>();
+
+        if(nombre != null) {
+            list = clienteService.findByNombre(nombre);
+        } else if(apellido != null) {
+            list = clienteService.findByApellido(apellido);
+        } else if(fecha != null) {
+            LocalDate date = GeneralUtils.getDateFromString(fecha);
+            if(date != null) list = clienteService.findByCumpleanhos(date);
+        }
+
+        if(list != null && !list.isEmpty()) {
+            for(Cliente cliente : list) {
+                cliente.setBolsas(null);
+            }
+        }
+
+        return list;
+    }
+
 }

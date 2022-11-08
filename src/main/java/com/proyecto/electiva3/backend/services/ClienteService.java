@@ -7,6 +7,7 @@ import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -42,5 +43,17 @@ public class ClienteService {
 
     public Cliente findById(Long id) {
         return clienteRepository.findByIdCliente(id);
+    }
+
+    public List<Cliente> findByNombre(String nombre) {
+        return clienteRepository.findByNombreIgnoreCase("%" + nombre + "%");
+    }
+
+    public List<Cliente>  findByApellido(String apellido) {
+        return clienteRepository.findByApellidoIgnoreCase("%" + apellido + "%");
+    }
+
+    public List<Cliente>  findByCumpleanhos(LocalDate date) {
+        return clienteRepository.findByFechaNac(date);
     }
 }
