@@ -139,11 +139,13 @@ public class PuntosService {
         }
 
         if (regla == null) {
-            throw new Exception("No existe regla para este monto.");
+            System.out.printf(">>> RESUL: No existe regla para este monto. <<<");
+            return 0f;
         }
 
         if(parametrizacionPuntos == null) {
-            throw new Exception("No hay puntos parametrizados disponibles.");
+            System.out.println(">>> RESUL: No hay puntos parametrizados disponibles. <<<");
+            return 0f;
         }
 
         Float cantPuntos = monto / regla.getMonto();
