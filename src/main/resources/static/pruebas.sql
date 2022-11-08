@@ -4,9 +4,17 @@ DROP TABLE IF EXISTS cliente;
 
 -- CONSULTAS PARA: CONCEPTO DE USO
 SELECT * FROM concepto;
+SELECT SUM(puntos) FROM concepto;
 DROP TABLE IF EXISTS concepto;
 
 -- CONSULTAS PARA: REGLAS DE PUNTOS
 SELECT * FROM reglas_puntos;
 DROP TABLE IF EXISTS reglas_puntos;
 
+-- CONSULTAS PARA: PARAMETRIZACION DE PUNTOS
+SELECT * FROM parametrizacion_venc_puntos;
+DROP TABLE IF EXISTS parametrizacion_venc_puntos;
+
+-- CONSULTAS PARA: BOLSA DE PUNTOS
+SELECT * FROM bolsa_puntos;
+DROP TABLE IF EXISTS bolsa_puntos;
