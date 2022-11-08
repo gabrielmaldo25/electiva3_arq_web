@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -18,29 +19,33 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public List<Cliente> findAll() {
-        return (List<Cliente>)clienteService.findAll();
+    public List<ClienteDTO> findAll() {
+        List<Cliente> list = (List<Cliente>)clienteService.findAll();
+        return list.stream().map(cliente -> ClienteDTO.instanciar(cliente)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Cliente findById(@PathVariable Long id) {
-        return clienteService.findById(id);
+    public ClienteDTO findById(@PathVariable Long id) {
+        ClienteDTO objeto = ClienteDTO.instanciar(clienteService.findById(id));
+        return objeto;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente create(@RequestBody ClienteDTO objetoDTO) {
+    public ClienteDTO create(@RequestBody ClienteDTO objetoDTO) {
         Cliente objeto = new Cliente();
         clienteService.convertToDTO(objeto, objetoDTO);
-        return clienteService.create(objeto);
+        objetoDTO = ClienteDTO.instanciar(clienteService.create(objeto));
+        return objetoDTO;
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Cliente update(@PathVariable Long id, @RequestBody ClienteDTO objetoDTO) {
+    public ClienteDTO update(@PathVariable Long id, @RequestBody ClienteDTO objetoDTO) {
         Cliente objeto = clienteService.findById(id);
         clienteService.convertToDTO(objeto, objetoDTO);
-        return clienteService.update(objeto);
+        objetoDTO = ClienteDTO.instanciar(clienteService.update(objeto));
+        return objetoDTO;
     }
 
     @DeleteMapping("/{id}")
