@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/conceptos")
@@ -17,29 +18,30 @@ public class ConceptoController {
     private ConceptoService conceptoService;
 
     @GetMapping
-    public List<Concepto> findAll() {
-        return (List<Concepto>)conceptoService.findAll();
+    public List<ConceptoDTO> findAll() {
+        List<Concepto> list = (List<Concepto>)conceptoService.findAll();
+        return list.stream().map(concepto -> ConceptoDTO.instanciar(concepto)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Concepto findById(@PathVariable Long id) {
-        return conceptoService.findById(id);
+    public ConceptoDTO findById(@PathVariable Long id) {
+        return ConceptoDTO.instanciar(conceptoService.findById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Concepto create(@RequestBody ConceptoDTO objetoDTO) {
+    public ConceptoDTO create(@RequestBody ConceptoDTO objetoDTO) {
         Concepto objeto = new Concepto();
         conceptoService.convertToDTO(objeto, objetoDTO);
-        return conceptoService.create(objeto);
+        return ConceptoDTO.instanciar(conceptoService.create(objeto));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Concepto update(@PathVariable Long id, @RequestBody ConceptoDTO objetoDTO) {
+    public ConceptoDTO update(@PathVariable Long id, @RequestBody ConceptoDTO objetoDTO) {
         Concepto objeto = conceptoService.findById(id);
         conceptoService.convertToDTO(objeto, objetoDTO);
-        return conceptoService.update(objeto);
+        return ConceptoDTO.instanciar(conceptoService.update(objeto));
     }
 
     @DeleteMapping("/{id}")

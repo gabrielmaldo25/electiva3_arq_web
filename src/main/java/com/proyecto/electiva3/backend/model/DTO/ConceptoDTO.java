@@ -1,6 +1,7 @@
 package com.proyecto.electiva3.backend.model.DTO;
 
 
+import com.proyecto.electiva3.backend.model.Concepto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,13 @@ public class ConceptoDTO {
     private Long idCliente;
     private String descripcion;
     private Float puntos;
+
+    public static ConceptoDTO instanciar(Concepto concepto) {
+        if(concepto == null) return null;
+        ConceptoDTO objeto = new ConceptoDTO();
+        objeto.idCliente = concepto.getIdConcepto();
+        objeto.descripcion = concepto.getDescripcion();
+        objeto.puntos = concepto.getPuntos();
+        return objeto;
+    }
 }
