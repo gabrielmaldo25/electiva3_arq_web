@@ -1,6 +1,7 @@
-# Frontend Trabajo Practico Electiva III - Arquitectura Web
+# Electiva III - Arquitectura Web
+El branch main es del frontend y el del back tiene su propio nombre.
 
-## How to use
+## How to use (main - frontend)
 
 - Clonar el repo
 - Tener instalados node y yarn (de forma global `npm install --global yarn` )
