@@ -16,11 +16,15 @@ public class ReglasPuntosDTO {
     private Float limiteInferior;
     private Float limiteSuperior;
     private Float monto;
+    private Integer validezDias;
 
-    public void convertir(ReglasPuntos reglasPuntos) {
-        this.idRegla = reglasPuntos.getIdRegla();
-        this.limiteInferior = reglasPuntos.getLimiteInferior();
-        this.limiteSuperior = reglasPuntos.getLimiteSuperior();
-        this.monto = reglasPuntos.getMonto();
+    public static ReglasPuntosDTO instanciar(ReglasPuntos reglasPuntos) {
+        if(reglasPuntos == null) return null;
+        ReglasPuntosDTO objeto = new ReglasPuntosDTO();
+        objeto.idRegla = reglasPuntos.getIdRegla();
+        objeto.limiteInferior = reglasPuntos.getLimiteInferior();
+        objeto.limiteSuperior = reglasPuntos.getLimiteSuperior();
+        objeto.monto = reglasPuntos.getMonto();
+        return objeto;
     }
 }

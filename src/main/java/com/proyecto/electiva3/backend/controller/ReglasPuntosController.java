@@ -1,13 +1,17 @@
 package com.proyecto.electiva3.backend.controller;
 
 import com.proyecto.electiva3.backend.model.DTO.ReglasPuntosDTO;
+import com.proyecto.electiva3.backend.model.ParamPuntos;
 import com.proyecto.electiva3.backend.model.ReglasPuntos;
+import com.proyecto.electiva3.backend.services.ParamPuntosService;
 import com.proyecto.electiva3.backend.services.ReglasPuntosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -16,30 +20,45 @@ public class ReglasPuntosController {
     @Autowired
     private ReglasPuntosService reglasService;
 
+    @Autowired
+    private ParamPuntosService paramPuntosService;
+
     @GetMapping
-    public List<ReglasPuntos> findAll() {
-        return (List<ReglasPuntos>)reglasService.findAll();
+    public List<ReglasPuntosDTO> findAll() {
+        List<ReglasPuntos> list = reglasService.findAll();
+        List<ReglasPuntosDTO> reglas = list.stream().map(regla -> ReglasPuntosDTO.instanciar(regla)).collect(Collectors.toList());
+        return reglas;
     }
 
     @GetMapping("/{id}")
-    public ReglasPuntos findById(@PathVariable Long id) {
-        return reglasService.findById(id);
+    public ReglasPuntosDTO findById(@PathVariable Long id) {
+        return ReglasPuntosDTO.instanciar(reglasService.findById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReglasPuntos create(@RequestBody ReglasPuntosDTO objetoDTO) {
+    public ReglasPuntosDTO create(@RequestBody ReglasPuntosDTO objetoDTO) {
         ReglasPuntos objeto = new ReglasPuntos();
         reglasService.convertToDTO(objeto, objetoDTO);
-        return reglasService.create(objeto);
+
+        // si existe campo validezDiaz crear parametrizacion
+        if(objetoDTO.getValidezDias() != null && objetoDTO.getValidezDias().intValue() > 0) {
+            ParamPuntos parametro = new ParamPuntos();
+            parametro.setFechaFin(null);
+            parametro.setFechaInicio(LocalDate.now());
+            parametro.setDuracion(objetoDTO.getValidezDias());
+            paramPuntosService.create(parametro);
+        }
+
+        return ReglasPuntosDTO.instanciar(reglasService.create(objeto));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReglasPuntos update(@PathVariable Long id, @RequestBody ReglasPuntosDTO objetoDTO) {
+    public ReglasPuntosDTO update(@PathVariable Long id, @RequestBody ReglasPuntosDTO objetoDTO) {
         ReglasPuntos objeto = reglasService.findById(id);
         reglasService.convertToDTO(objeto, objetoDTO);
-        return reglasService.update(objeto);
+        return ReglasPuntosDTO.instanciar(reglasService.update(objeto));
     }
 
     @DeleteMapping("/{id}")
