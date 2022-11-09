@@ -15,4 +15,5 @@ public interface BolsaPuntosRepository extends JpaRepository<BolsaPuntos, Long> 
     public List<BolsaPuntos> findByCliente(Cliente cliente);
     public List<BolsaPuntos> findByPuntosBetween(Float min, Float max);
     public List<BolsaPuntos> findByFechaCaducidadBetween(LocalDate min, LocalDate max);
+    public List<BolsaPuntos> findByFechaCaducidadLessThanEqualAndPuntosSaldoGreaterThan(LocalDate fechaCaducidad, Float puntosSaldo);
 }
