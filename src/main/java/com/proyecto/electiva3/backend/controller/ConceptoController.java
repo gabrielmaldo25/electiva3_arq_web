@@ -21,7 +21,7 @@ public class ConceptoController {
     public List<ConceptoDTO> findAll(@RequestParam(required = false) String concepto) {
         if(concepto != null) {
             List<Concepto> conceptos = conceptoService.filterConcepto(concepto);
-            return conceptos.stream().map(obj -> ConceptoDTO.instanciar(obj)).collect(Collectors.toList());
+              return conceptos.stream().map(obj -> ConceptoDTO.instanciar(obj)).collect(Collectors.toList());
         }
         List<Concepto> list = (List<Concepto>)conceptoService.findAll();
         return list.stream().map(obj -> ConceptoDTO.instanciar(obj)).collect(Collectors.toList());
@@ -30,12 +30,6 @@ public class ConceptoController {
     @GetMapping("/{id}")
     public ConceptoDTO findById(@PathVariable Long id) {
         return ConceptoDTO.instanciar(conceptoService.findById(id));
-    }
-
-    @GetMapping("{concepto}")
-    public List<ConceptoDTO> findByConcepto(@PathVariable String concepto) {
-        List<Concepto> conceptos = conceptoService.filterConcepto(concepto);
-        return conceptos.stream().map(obj -> ConceptoDTO.instanciar(obj)).collect(Collectors.toList());
     }
 
     @PostMapping
