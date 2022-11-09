@@ -28,7 +28,7 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { getPagos } from "./pagos";
+import { getCanjes } from "./canjes";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -93,20 +93,23 @@ function TablePaginationActions(props) {
 }
 
 export async function action() {
-  return redirect(`/pagos/new`);
+  return redirect(`/canjes/new`);
 }
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const pagos = await getPagos(q);
-  return { pagos, q };
+  const canjes = await getCanjes(q);
+  return { canjes, q };
 }
 
 export default function Index() {
   const [open, setOpen] = useState(false);
   const outlet = useOutlet();
-  const { pagos, q } = useLoaderData();
+  const { canjes, q } = useLoaderData();
+  useEffect(() => {
+    console.log("CANJES: ", canjes);
+  }, [canjes]);
   const navigate = useNavigate();
 
   /* Parte de la tabla */
@@ -115,7 +118,7 @@ export default function Index() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - pagos.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - canjes.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -128,9 +131,6 @@ export default function Index() {
 
   /* *** */
 
-  useEffect(() => {
-    document.getElementById("q").value = q;
-  }, [q]);
   return (
     <Layout>
       <div className="flex-1">
@@ -140,7 +140,7 @@ export default function Index() {
               <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
                 <div className="flex items-center justify-between">
                   <h1 className="text-3xl font-bold text-white">
-                    Todos los puntos por cliente
+                    Todos los puntos canjeados
                   </h1>
                   <Form method="post">
                     <button
@@ -156,7 +156,7 @@ export default function Index() {
                       >
                         <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
                       </svg>
-                      Agregar Pago
+                      Canjear Puntos
                     </button>
                   </Form>
                 </div>
@@ -196,37 +196,30 @@ export default function Index() {
                   <TableHead className="bg-green-800">
                     <TableRow>
                       <TableCell className="text-white">Cliente</TableCell>
-                      <TableCell className="text-white">
-                        Monto Operacion
-                      </TableCell>
                       <TableCell className="text-white">Fecha</TableCell>
-                      <TableCell className="text-white">Puntos</TableCell>
-                      <TableCell className="text-white">Usados</TableCell>
-                      <TableCell className="text-white">Saldo</TableCell>
-                      <TableCell className="text-white">Vence</TableCell>
+                      <TableCell className="text-white">Concepto</TableCell>
+                      <TableCell className="text-white">
+                        Puntos Usados
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {(rowsPerPage > 0
-                      ? pagos.slice(
+                      ? canjes.slice(
                           page * rowsPerPage,
                           page * rowsPerPage + rowsPerPage
                         )
-                      : pagos
+                      : canjes
                     ).map((row) => (
                       <TableRow
-                        key={row.idBolsa}
+                        key={row.id}
                         className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
                         /* onClick={() => {
                           setUsuario(row);
                           setOpen(true);
                         }} */
                       >
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className="text-sand-300 hover:text-gray-900"
-                        >
+                        <TableCell className="text-sand-300 hover:text-gray-900">
                           {row.cliente}
                         </TableCell>
                         <TableCell
@@ -234,28 +227,19 @@ export default function Index() {
                           scope="row"
                           className="text-sand-300 hover:text-gray-900"
                         >
-                          {row.montoOperacion}
+                          {row.fechaOperacion}
                         </TableCell>
                         <TableCell className="text-sand-300 hover:text-gray-900">
-                          {new Date(row.fechaAsig).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.puntos}
+                          {row.concepto}
                         </TableCell>
                         <TableCell className="text-sand-300 hover:text-gray-900">
                           {row.puntosUsados}
-                        </TableCell>
-                        <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.puntosSaldo}
-                        </TableCell>
-                        <TableCell className="text-sand-300 hover:text-gray-900">
-                          {new Date(row.fechaCaducidad).toLocaleDateString()}
                         </TableCell>
                       </TableRow>
                     ))}
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={7} />
+                        <TableCell colSpan={6} />
                       </TableRow>
                     )}
                   </TableBody>
@@ -268,8 +252,8 @@ export default function Index() {
                           25,
                           { label: "All", value: -1 },
                         ]}
-                        colSpan={7}
-                        count={pagos.length}
+                        colSpan={6}
+                        count={canjes.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         SelectProps={{
@@ -286,7 +270,6 @@ export default function Index() {
                   </TableFooter>
                 </Table>
               </TableContainer>
-              {open && <ABMPago open={open} setOpen={setOpen} />}
             </section>
           </div>
         )}
