@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Box,
   ListItemText,
   MenuItem,
   Select,
@@ -45,10 +46,10 @@ export default function ABMCanje({ open, setOpen }) {
   useEffect(() => {
     (async () => {
       let res = await getConceptos();
-      console.log("ABER: ", res);
       res = res.map((concepto) => ({
         id: concepto.idConcepto,
         label: concepto.descripcion,
+        puntos: concepto.puntos,
       }));
       setConceptos(res);
     })();
@@ -60,6 +61,7 @@ export default function ABMCanje({ open, setOpen }) {
       res = res.map((cliente) => ({
         id: cliente.idCliente,
         label: cliente.nombre,
+        puntos: cliente.puntos,
       }));
       setClientes(res);
     })();
@@ -86,6 +88,17 @@ export default function ABMCanje({ open, setOpen }) {
                 className="bg-white"
                 name="idCliente"
                 onChange={(event, value) => setIdCliente(value.id)}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Box>
+                      {option.label}
+                      <br />
+                      <p className="text-sm text-gray-500">
+                        {option.puntos} puntos disponibles
+                      </p>
+                    </Box>
+                  </li>
+                )}
               />
               <input hidden value={idCliente} name="idCliente" />
             </div>
@@ -105,6 +118,17 @@ export default function ABMCanje({ open, setOpen }) {
               className="bg-white"
               name="idCliente"
               onChange={(event, value) => setIdConcepto(value.id)}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Box>
+                    {option.label}
+                    <br />
+                    <p className="text-sm text-gray-500">
+                      {option.puntos} puntos
+                    </p>
+                  </Box>
+                </li>
+              )}
             />
             <input hidden value={idConcepto} name="idConcepto" />
           </div>

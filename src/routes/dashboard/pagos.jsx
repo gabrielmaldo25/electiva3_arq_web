@@ -5,6 +5,17 @@ export async function getPagos(query) {
     if (query) q += `?cliente=${query}`;
     let res = await fetch(q);
     pagos = await res.json();
+    //ordenar por id descendente
+    pagos = pagos.sort(function (a, b) {
+      if (a.idBola < b.idBolsa) {
+        return 1;
+      }
+      if (a.idBolsa > b.idBolsa) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
   } catch (error) {
     console.log("ERROR; ", error);
   }
@@ -20,7 +31,8 @@ export async function createPago(payload) {
       body: JSON.stringify(payload),
       headers: { "Content-Type": "application/json" },
     });
-    pago = await res.json();
+    console.log("RES: ", res);
+    /*  pago = await res.json(); */
   } catch (error) {
     console.log("ERROR; ", error);
   }

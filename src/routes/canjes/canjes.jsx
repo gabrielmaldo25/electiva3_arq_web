@@ -3,6 +3,17 @@ export async function getCanjes(query) {
   try {
     let res = await fetch(`/api/reportes/uso-puntos`);
     canjes = await res.json();
+    //ordenar por id descendente
+    canjes = canjes.sort(function (a, b) {
+      if (a.idPuntosCab < b.idPuntosCab) {
+        return 1;
+      }
+      if (a.idPuntosCab > b.idPuntosCab) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
   } catch (error) {
     console.log("ERROR; ", error);
   }

@@ -215,7 +215,7 @@ export default function Index() {
                       : pagos
                     ).map((row) => (
                       <TableRow
-                        key={row.id}
+                        key={row.idBolsa}
                         className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
                         /* onClick={() => {
                           setUsuario(row);

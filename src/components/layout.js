@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 
 const pages = [
-  { href: "/", name: "Dashboard" },
+  { href: "/", name: "Puntos" },
   { href: "/canjes", name: "Canjes" },
   { href: "/clientes", name: "Clientes" },
   { href: "/reglas", name: "Reglas" },
