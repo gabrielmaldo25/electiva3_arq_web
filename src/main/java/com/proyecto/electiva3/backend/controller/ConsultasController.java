@@ -148,7 +148,7 @@ public class ConsultasController {
             LocalDate date = GeneralUtils.getDateFromString(fecha);
             if(date != null) list = clienteService.findByCumpleanhos(date);
         } else {
-            list = clienteService.findAll();
+            return clienteService.findAll();
         }
 
         List<ClienteDTO> listClientes = new ArrayList<>();

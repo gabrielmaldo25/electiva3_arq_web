@@ -20,8 +20,7 @@ public class ClienteController {
 
     @GetMapping
     public List<ClienteDTO> findAll() {
-        List<Cliente> list = (List<Cliente>)clienteService.findAll();
-        return list.stream().map(cliente -> ClienteDTO.instanciar(cliente)).collect(Collectors.toList());
+        return clienteService.findAll();
     }
 
     @GetMapping("/{id}")

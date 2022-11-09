@@ -1,13 +1,16 @@
 package com.proyecto.electiva3.backend.services;
 
+import com.proyecto.electiva3.backend.model.BolsaPuntos;
 import com.proyecto.electiva3.backend.model.Cliente;
 import com.proyecto.electiva3.backend.model.DTO.ClienteDTO;
+import com.proyecto.electiva3.backend.repository.BolsaPuntosRepository;
 import com.proyecto.electiva3.backend.repository.ClienteRepository;
 import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +18,9 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private BolsaPuntosRepository bolsaPuntosRepository;
 
     public void convertToDTO(Cliente objeto, ClienteDTO objetoDTO) {
         objeto.setNombre(objetoDTO.getNombre());
@@ -37,8 +43,22 @@ public class ClienteService {
         clienteRepository.delete(objeto);
     }
 
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll();
+    public List<ClienteDTO> findAll() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<ClienteDTO> objetos = new ArrayList<>();
+        for(Cliente cli : clientes) {
+            ClienteDTO obj = ClienteDTO.instanciar(cli);
+            obj.setPuntos(0f);
+            List<BolsaPuntos> bolsas =
+                    bolsaPuntosRepository.findByClienteAndPuntosSaldoGreaterThanOrderByFechaCaducidad(cli, 0f);
+            if(bolsas != null) { // si el cliente tiene bolsas de puntos se calcula el total, sino es cero.
+                for(BolsaPuntos bolsa : bolsas) {
+                    obj.setPuntos(obj.getPuntos() + bolsa.getPuntosSaldo());
+                }
+            }
+            objetos.add(obj);
+        }
+        return objetos;
     }
 
     public Cliente findById(Long id) {

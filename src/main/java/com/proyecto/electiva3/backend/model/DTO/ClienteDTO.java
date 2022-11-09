@@ -19,6 +19,7 @@ public class ClienteDTO {
     private String email;
     private String telefono;
     private String fechaNac;
+    private Float puntos;
 
     public static ClienteDTO instanciar(Cliente cliente) {
         if(cliente == null) return null;

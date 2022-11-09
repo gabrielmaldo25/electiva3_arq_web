@@ -83,7 +83,7 @@ public class PuntosService {
             throw new Exception("El concepto no se encuentra en la base de datos.");
         }
 
-        bolsaPuntos = bolsaPuntosRepository.findByClienteOrderByFechaCaducidad(cliente);
+        bolsaPuntos = bolsaPuntosRepository.findByClienteAndPuntosSaldoGreaterThanOrderByFechaCaducidad(cliente, 0f);
         for (BolsaPuntos bolsa : bolsaPuntos) {
             puntosDisp += bolsa.getPuntosSaldo();
         }
