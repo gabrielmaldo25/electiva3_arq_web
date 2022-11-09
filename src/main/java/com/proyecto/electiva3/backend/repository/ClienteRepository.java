@@ -12,5 +12,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     public Cliente findByIdCliente(Long idCliente);
     public List<Cliente> findByNombreIgnoreCase(String nombre);
     public List<Cliente> findByApellidoIgnoreCase(String apellido);
+    public List<Cliente> findByNombreIgnoreCaseOrApellidoIgnoreCase(String nombre, String apellido);
     public List<Cliente> findByFechaNac(LocalDate fechaNac);
 }

@@ -34,21 +34,33 @@ public class ConsultasController {
     private BolsaPuntosRepository bolsaPuntosRepository;
 
     @GetMapping("/uso-puntos")
-    public List<UsoPuntos> reporteUsoPuntos(@RequestParam(required = false) Long concepto,
+    public List<UsoPuntos> reporteUsoPuntos(@RequestParam(required = false) String concepto,
                                                  @RequestParam(required = false) String fecha,
-                                                 @RequestParam(required = false) Long cliente) {
+                                                 @RequestParam(required = false) String cliente) {
         List<PuntosCabecera> puntos = new ArrayList<>();
         List<UsoPuntos> list = new ArrayList<>();
 
         if(concepto != null) {
-            Concepto objeto = conceptoService.findById(concepto);
-            if(objeto != null) puntos = puntosCabeceraRepository.findByConcepto(objeto);
+            List<Concepto> objetos = conceptoService.filterConcepto(concepto);
+            if(objetos != null) {
+                for(Concepto con : objetos) {
+                    List<PuntosCabecera> aux = puntosCabeceraRepository.findByConcepto(con);
+                    if(aux != null) puntos.addAll(aux);
+                }
+            }
         } else if(fecha != null) {
             LocalDate date = GeneralUtils.getDateFromString(fecha);
-            if(date != null) puntos = puntosCabeceraRepository.findByFecha(date);
+            if(date != null) {
+                puntos = puntosCabeceraRepository.findByFecha(date);
+            }
         } else if(cliente != null) {
-            Cliente objeto = clienteService.findById(cliente);
-            if(objeto != null) puntos = puntosCabeceraRepository.findByCliente(objeto);
+            List<Cliente> objetos = clienteService.filterCliente(cliente);
+            if(objetos != null) {
+                for(Cliente cli : objetos) {
+                    List<PuntosCabecera> aux = puntosCabeceraRepository.findByCliente(cli);
+                    if(aux != null) puntos.addAll(aux);
+                }
+            }
         } else {
             puntos = puntosCabeceraRepository.findAll();
         }
@@ -65,15 +77,20 @@ public class ConsultasController {
     }
 
     @GetMapping("/bolsa-puntos")
-    public List<com.proyecto.electiva3.backend.model.reporte.BolsaPuntos> reporteBolsaPuntos(@RequestParam(required = false) Long cliente,
+    public List<com.proyecto.electiva3.backend.model.reporte.BolsaPuntos> reporteBolsaPuntos(@RequestParam(required = false) String cliente,
                                                                                              @RequestParam(required = false) Float inferior,
                                                                                              @RequestParam(required = false) Float superior) {
         List<BolsaPuntos> bolsas = new ArrayList<>();
         List<com.proyecto.electiva3.backend.model.reporte.BolsaPuntos> list = new ArrayList<>();
 
         if(cliente != null) {
-            Cliente objeto = clienteService.findById(cliente);
-            if(objeto != null) bolsas = bolsaPuntosRepository.findByCliente(objeto);
+            List<Cliente> objetos = clienteService.filterCliente(cliente);
+            if(objetos != null) {
+                for(Cliente cli : objetos) {
+                    List<BolsaPuntos> aux = bolsaPuntosRepository.findByCliente(cli);
+                    if(aux != null) bolsas.addAll(aux);
+                }
+            }
         } else if(inferior != null && superior != null) {
             bolsas = bolsaPuntosRepository.findByPuntosBetween(inferior, superior);
         } else {

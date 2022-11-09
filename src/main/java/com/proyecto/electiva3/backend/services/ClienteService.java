@@ -56,4 +56,10 @@ public class ClienteService {
     public List<Cliente>  findByCumpleanhos(LocalDate date) {
         return clienteRepository.findByFechaNac(date);
     }
+
+    public List<Cliente> filterCliente(String cliente) {
+        if(cliente == null) return null;
+        cliente = "%" + cliente + "%";
+        return clienteRepository.findByNombreIgnoreCaseOrApellidoIgnoreCase(cliente, cliente);
+    }
 }

@@ -39,4 +39,10 @@ public class ConceptoService {
     public Concepto findById(Long id) {
         return conceptoRepository.findByIdConcepto(id);
     }
+
+    public List<Concepto> filterConcepto(String concepto) {
+        if(concepto == null) return null;
+        concepto = "%" + concepto + "%";
+        return conceptoRepository.findByDescripcionIgnoreCase(concepto);
+    }
 }
