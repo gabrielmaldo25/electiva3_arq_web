@@ -1,5 +1,6 @@
 package com.proyecto.electiva3.backend.controller;
 
+import ch.qos.logback.core.net.server.Client;
 import com.proyecto.electiva3.backend.model.Cliente;
 import com.proyecto.electiva3.backend.model.DTO.ClienteDTO;
 import com.proyecto.electiva3.backend.repository.ClienteRepository;
@@ -19,7 +20,11 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public List<ClienteDTO> findAll() {
+    public List<ClienteDTO> findAll(@RequestParam(required = false) String cliente) {
+        if(cliente != null) {
+            List<Cliente> clientes = clienteService.filterCliente(cliente);
+            return clienteService.calcularPuntosXcliente(clientes);
+        }
         return clienteService.findAll();
     }
 

@@ -45,19 +45,7 @@ public class ClienteService {
 
     public List<ClienteDTO> findAll() {
         List<Cliente> clientes = clienteRepository.findAll();
-        List<ClienteDTO> objetos = new ArrayList<>();
-        for(Cliente cli : clientes) {
-            ClienteDTO obj = ClienteDTO.instanciar(cli);
-            obj.setPuntos(0f);
-            List<BolsaPuntos> bolsas =
-                    bolsaPuntosRepository.findByClienteAndPuntosSaldoGreaterThanOrderByFechaCaducidad(cli, 0f);
-            if(bolsas != null) { // si el cliente tiene bolsas de puntos se calcula el total, sino es cero.
-                for(BolsaPuntos bolsa : bolsas) {
-                    obj.setPuntos(obj.getPuntos() + bolsa.getPuntosSaldo());
-                }
-            }
-            objetos.add(obj);
-        }
+        List<ClienteDTO> objetos = calcularPuntosXcliente(clientes);
         return objetos;
     }
 
@@ -79,7 +67,25 @@ public class ClienteService {
 
     public List<Cliente> filterCliente(String cliente) {
         if(cliente == null) return null;
-//        cliente = "%" + cliente + "%";
         return clienteRepository.findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(cliente, cliente);
+    }
+
+    public List<ClienteDTO> calcularPuntosXcliente(List<Cliente> clientes) {
+        if(clientes == null) return null;
+
+        List<ClienteDTO> objetos = new ArrayList<>();
+
+        for(Cliente cli : clientes) {
+            ClienteDTO obj = ClienteDTO.instanciar(cli);
+            obj.setPuntos(0f);
+            List<BolsaPuntos> bolsas = bolsaPuntosRepository.findByClienteAndPuntosSaldoGreaterThanOrderByFechaCaducidad(cli, 0f);
+            if(bolsas != null) { // si el cliente tiene bolsas de puntos se calcula el total, sino es cero.
+                for(BolsaPuntos bolsa : bolsas) {
+                    obj.setPuntos(obj.getPuntos() + bolsa.getPuntosSaldo());
+                }
+            }
+            objetos.add(obj);
+        }
+        return objetos;
     }
 }

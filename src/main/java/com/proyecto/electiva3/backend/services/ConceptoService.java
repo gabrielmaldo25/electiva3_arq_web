@@ -42,7 +42,6 @@ public class ConceptoService {
 
     public List<Concepto> filterConcepto(String concepto) {
         if(concepto == null) return null;
-//        concepto = "%" + concepto + "%";
         return conceptoRepository.findByDescripcionContainingIgnoreCase(concepto);
     }
 }

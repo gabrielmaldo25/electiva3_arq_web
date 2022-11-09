@@ -28,6 +28,12 @@ public class ConceptoController {
         return ConceptoDTO.instanciar(conceptoService.findById(id));
     }
 
+    @GetMapping("{concepto}")
+    public List<ConceptoDTO> findByConcepto(@PathVariable String concepto) {
+        List<Concepto> conceptos = conceptoService.filterConcepto(concepto);
+        return conceptos.stream().map(obj -> ConceptoDTO.instanciar(obj)).collect(Collectors.toList());
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ConceptoDTO create(@RequestBody ConceptoDTO objetoDTO) {
