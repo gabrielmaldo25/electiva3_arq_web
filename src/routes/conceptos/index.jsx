@@ -104,7 +104,6 @@ export async function loader({ request }) {
 }
 
 export default function Index() {
-
   const [open, setOpen] = useState(false);
   const outlet = useOutlet();
   const { conceptos, q } = useLoaderData();
@@ -129,6 +128,9 @@ export default function Index() {
 
   /* *** */
 
+  useEffect(() => {
+    document.getElementById("q").value = q;
+  }, [q]);
 
   return (
     <Layout>
@@ -157,7 +159,7 @@ export default function Index() {
                     </button>
                   </Form>
                 </div>
-                <form className="group relative">
+                <Form className="group relative" id="search-form" role="search">
                   <svg
                     width="20"
                     height="20"
@@ -172,12 +174,17 @@ export default function Index() {
                     />
                   </svg>
                   <input
+                    id="q"
                     className="focus:ring-2 focus:ring-green-400 focus:outline-none appearance-none w-full text-sm leading-6 text-gray-900 placeholder-gray-900 rounded-md py-2 pl-10 ring-1 ring-sand-300 shadow-sm bg-sand-300"
-                    type="text"
                     aria-label="Buscar"
                     placeholder="Buscar..."
+                    type="search"
+                    name="q"
+                    onChange={(event) => {
+                      submit(event.currentTarget.form);
+                    }}
                   />
-                </form>
+                </Form>
               </header>
 
               <TableContainer component={Paper}>

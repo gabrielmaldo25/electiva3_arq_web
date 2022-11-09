@@ -1,7 +1,9 @@
 export async function getConceptos(query) {
   let conceptos;
   try {
-    let res = await fetch(`/api/conceptos`);
+    let q = `/api/conceptos`;
+    if (query) q += `?concepto=${query}`;
+    let res = await fetch(q);
     conceptos = await res.json();
   } catch (error) {
     console.log("ERROR; ", error);

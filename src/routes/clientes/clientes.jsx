@@ -5,7 +5,9 @@ import sortBy from "sort-by";
 export async function getClientes(query) {
   let clientes;
   try {
-    let res = await fetch(`/api/clientes`);
+    let q = `/api/clientes`;
+    if (query) q += `?cliente=${query}`;
+    let res = await fetch(q);
     clientes = await res.json();
   } catch (error) {
     console.log("ERROR; ", error);
