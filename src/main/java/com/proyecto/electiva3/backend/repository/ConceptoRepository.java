@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ConceptoRepository extends JpaRepository<Concepto, Long> {
     public Concepto findByIdConcepto(Long idConcepto);
-    public List<Concepto> findByDescripcionIgnoreCase(String descripcion);
+    public List<Concepto> findByDescripcionContainingIgnoreCase(String descripcion);
 }

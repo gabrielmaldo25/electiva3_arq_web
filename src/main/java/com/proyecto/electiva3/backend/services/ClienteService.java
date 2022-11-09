@@ -46,11 +46,11 @@ public class ClienteService {
     }
 
     public List<Cliente> findByNombre(String nombre) {
-        return clienteRepository.findByNombreIgnoreCase("%" + nombre + "%");
+        return clienteRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
     public List<Cliente>  findByApellido(String apellido) {
-        return clienteRepository.findByApellidoIgnoreCase("%" + apellido + "%");
+        return clienteRepository.findByApellidoContainingIgnoreCase(apellido);
     }
 
     public List<Cliente>  findByCumpleanhos(LocalDate date) {
@@ -59,7 +59,7 @@ public class ClienteService {
 
     public List<Cliente> filterCliente(String cliente) {
         if(cliente == null) return null;
-        cliente = "%" + cliente + "%";
-        return clienteRepository.findByNombreIgnoreCaseOrApellidoIgnoreCase(cliente, cliente);
+//        cliente = "%" + cliente + "%";
+        return clienteRepository.findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(cliente, cliente);
     }
 }
