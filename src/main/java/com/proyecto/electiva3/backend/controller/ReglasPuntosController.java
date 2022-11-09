@@ -44,8 +44,6 @@ public class ReglasPuntosController {
         // si existe campo validezDiaz crear parametrizacion
         if(objetoDTO.getValidezDias() != null && objetoDTO.getValidezDias().intValue() > 0) {
             ParamPuntos parametro = new ParamPuntos();
-            parametro.setFechaFin(null);
-            parametro.setFechaInicio(LocalDate.now());
             parametro.setDuracion(objetoDTO.getValidezDias());
             paramPuntosService.create(parametro);
         }

@@ -32,14 +32,7 @@ public class ParametrizacionController {
     @ResponseStatus(HttpStatus.CREATED)
     public ParamPuntosDTO create(@RequestBody ParamPuntosDTO objetoDTO) {
         ParamPuntos objeto = new ParamPuntos();
-        objetoDTO.setFechaFin(null);
         paramPuntosService.convertToDTO(objeto, objetoDTO);
-        // por si existen varias parametrizaciones de puntos vigentes
-        // se le agrega fechaFin para finaliar su vigencia y crear uno nuevo
-        for(ParamPuntos param : paramPuntosService.getAllCurrentParam()) {
-            param.setFechaFin(LocalDate.now());
-            paramPuntosService.update(param);
-        }
         return ParamPuntosDTO.instanciar(paramPuntosService.create(objeto));
     }
 

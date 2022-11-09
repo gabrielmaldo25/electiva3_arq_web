@@ -7,6 +7,7 @@ import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,6 +22,15 @@ public class ParamPuntosService {
     }
 
     public ParamPuntos create(ParamPuntos objeto) {
+        objeto.setFechaFin(null);
+        objeto.setFechaInicio(LocalDate.now());
+        // por si existen varias parametrizaciones de puntos vigentes
+        // se le agrega fechaFin para finaliar su vigencia y crear uno nuevo
+        for(ParamPuntos param : this.getAllCurrentParam()) {
+            param.setFechaFin(LocalDate.now());
+            this.update(param);
+        }
+
         return paramPuntosRepository.save(objeto);
     }
 
@@ -42,7 +52,7 @@ public class ParamPuntosService {
 
     /* retorna la primera parametrizaciones de puntos que este vigente */
     public ParamPuntos getCurrentParam() {
-        List<ParamPuntos> paramPuntos = paramPuntosRepository.findTopByFechaFinIsNull();
+        List<ParamPuntos> paramPuntos = paramPuntosRepository.findByFechaFinIsNull();
         return (paramPuntos != null)? paramPuntos.get(0) : null;
     }
 
@@ -50,6 +60,6 @@ public class ParamPuntosService {
     *  (fechaFin igual null)
     * */
     public List<ParamPuntos> getAllCurrentParam() {
-        return paramPuntosRepository.findTopByFechaFinIsNull();
+        return paramPuntosRepository.findByFechaFinIsNull();
     }
 }

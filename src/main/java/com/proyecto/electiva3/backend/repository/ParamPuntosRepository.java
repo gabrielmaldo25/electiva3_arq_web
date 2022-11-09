@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ParamPuntosRepository extends JpaRepository<ParamPuntos, Long> {
     public ParamPuntos findByIdParamPunto(Long idParamPunto);
-    public List<ParamPuntos> findTopByFechaFinIsNull();
+    public List<ParamPuntos> findByFechaFinIsNull();
 }
