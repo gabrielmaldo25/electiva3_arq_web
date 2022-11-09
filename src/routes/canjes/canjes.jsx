@@ -1,7 +1,10 @@
 export async function getCanjes(query) {
   let canjes = [];
   try {
-    let res = await fetch(`/api/reportes/uso-puntos`);
+    let q = `/api/reportes/uso-puntos`;
+    if (query) q += `?cliente=${query}`;
+
+    let res = await fetch(q);
     canjes = await res.json();
     //ordenar por id descendente
     canjes = canjes.sort(function (a, b) {
