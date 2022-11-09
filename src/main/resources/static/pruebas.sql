@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS cliente;
 -- CONSULTAS PARA: CONCEPTO DE USO
 SELECT * FROM concepto;
 SELECT SUM(puntos) FROM concepto;
+SELECT * FROM concepto WHERE descripcion ILIKE '%desc%ropa%';
 DROP TABLE IF EXISTS concepto;
 
 -- CONSULTAS PARA: REGLAS DE PUNTOS
@@ -18,3 +19,6 @@ DROP TABLE IF EXISTS parametrizacion_venc_puntos;
 -- CONSULTAS PARA: BOLSA DE PUNTOS
 SELECT * FROM bolsa_puntos;
 DROP TABLE IF EXISTS bolsa_puntos;
+
+-- CONSULTS PARA USO DE PUNTOS:
+SELECT * FROM puntos_cabecera;

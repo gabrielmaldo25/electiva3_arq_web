@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsoPuntos {
+    private Long idPuntosCab;
     private LocalDate fechaOperacion;
     private String cliente;
     private String nroDocumento;

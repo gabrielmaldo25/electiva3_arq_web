@@ -68,7 +68,7 @@ public class ConsultasController {
         if(puntos != null) {
             for(PuntosCabecera punto : puntos) {
                 String nombre = punto.getCliente().getNombre() + " " + punto.getCliente().getApellido();
-                list.add(new UsoPuntos(punto.getFecha(), nombre, punto.getCliente().getNroDocumento(),
+                list.add(new UsoPuntos(punto.getIdPuntosCab(), punto.getFecha(), nombre, punto.getCliente().getNroDocumento(),
                         punto.getConcepto().getDescripcion(), punto.getPuntajeUtilizado()));
             }
         }
@@ -101,7 +101,7 @@ public class ConsultasController {
             for(BolsaPuntos bolsa : bolsas) {
                 String nombre = bolsa.getCliente().getNombre() + " " + bolsa.getCliente().getApellido();
                 list.add(new com.proyecto.electiva3.backend.model.reporte.BolsaPuntos(
-                        bolsa.getFechaAsig(), bolsa.getFechaCaducidad(), bolsa.getMontoOperacion(),
+                        bolsa.getIdBolsa(), bolsa.getFechaAsig(), bolsa.getFechaCaducidad(), bolsa.getMontoOperacion(),
                         bolsa.getPuntos(), bolsa.getPuntosSaldo(), bolsa.getPuntosUsados(), nombre
                 ));
             }
@@ -125,7 +125,7 @@ public class ConsultasController {
             for(BolsaPuntos bolsa : bolsas) {
                 String nombre = bolsa.getCliente().getNombre() + " " + bolsa.getCliente().getApellido();
                 list.add(new com.proyecto.electiva3.backend.model.reporte.BolsaPuntos(
-                        bolsa.getFechaAsig(), bolsa.getFechaCaducidad(), bolsa.getMontoOperacion(),
+                        bolsa.getIdBolsa(), bolsa.getFechaAsig(), bolsa.getFechaCaducidad(), bolsa.getMontoOperacion(),
                         bolsa.getPuntos(), bolsa.getPuntosSaldo(), bolsa.getPuntosUsados(), nombre
                 ));
             }

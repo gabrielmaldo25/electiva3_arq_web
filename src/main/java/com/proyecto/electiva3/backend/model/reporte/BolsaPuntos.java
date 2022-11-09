@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BolsaPuntos {
+    private Long idBolsa;
     private LocalDate fechaAsig;
     private LocalDate fechaCaducidad;
     private Float montoOperacion;
