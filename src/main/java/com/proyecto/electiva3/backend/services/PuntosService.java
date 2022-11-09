@@ -47,6 +47,10 @@ public class PuntosService {
 
         Float cantPuntos = calcularPuntos(monto);
 
+        if(cantPuntos == 0f) {
+            return;
+        }
+
         BolsaPuntos bolsaPuntos = new BolsaPuntos();
         bolsaPuntos.setCliente(cliente);
         // asigna la fecha actual
