@@ -104,6 +104,12 @@ export async function loader({ request }) {
 }
 
 export default function Index() {
+
+
+  const outlet = useOutlet();
+  const { reglas, q } = useLoaderData();
+  const navigate = useNavigate();
+
   /* Parte de la tabla */
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -123,9 +129,6 @@ export default function Index() {
 
   /* *** */
 
-  const outlet = useOutlet();
-  const { reglas, q } = useLoaderData();
-  const navigate = useNavigate();
   return (
     <Layout>
       <div className="flex-1">
@@ -190,7 +193,12 @@ export default function Index() {
                       <TableCell className="text-white">
                         Limite Superior
                       </TableCell>
-                      <TableCell className="text-white">Puntos </TableCell>
+                      <TableCell className="text-white">
+                        Punto x Monto
+                      </TableCell>
+                      <TableCell className="text-white">
+                        Validez (días)
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -227,6 +235,9 @@ export default function Index() {
                         </TableCell>
                         <TableCell className="text-sand-300 hover:text-gray-900">
                           {row.monto}
+                        </TableCell>
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.validezDias}
                         </TableCell>
                       </TableRow>
                     ))}

@@ -10,6 +10,7 @@ export function loader({ params }) {
 export async function action({ request, params }) {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
+  console.log("PARA REGLA: ", updates);
   let res;
   if (params.idRegla) {
     await updateRegla(params.idRegla, updates);
@@ -53,9 +54,16 @@ export default function ABMRegla({ open, setOpen }) {
             />
             <input
               type="text"
-              placeholder="Puntos"
+              placeholder="Monto (1 punto cada monto)"
               name="monto"
               defaultValue={regla.monto}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Validez de puntos (días)"
+              name="validezDias"
+              defaultValue={regla.validezDias}
               required
             />
           </div>

@@ -21,14 +21,14 @@ import {
   TableHead,
 } from "@mui/material";
 import {
+  Form,
   redirect,
   Outlet,
   useOutlet,
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { Form } from "react-router-dom/dist";
-import { getConceptos } from "./conceptos";
+import { getCanjes } from "./canjes";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -93,21 +93,23 @@ function TablePaginationActions(props) {
 }
 
 export async function action() {
-  return redirect(`/conceptos/new`);
+  return redirect(`/canjes/new`);
 }
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const conceptos = await getConceptos(q);
-  return { conceptos, q };
+  const canjes = await getCanjes(q);
+  return { canjes, q };
 }
 
 export default function Index() {
-
   const [open, setOpen] = useState(false);
   const outlet = useOutlet();
-  const { conceptos, q } = useLoaderData();
+  const { canjes, q } = useLoaderData();
+  useEffect(() => {
+    console.log("CANJES: ", canjes);
+  }, [canjes]);
   const navigate = useNavigate();
 
   /* Parte de la tabla */
@@ -116,7 +118,7 @@ export default function Index() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - conceptos.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - canjes.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -129,7 +131,6 @@ export default function Index() {
 
   /* *** */
 
-
   return (
     <Layout>
       <div className="flex-1">
@@ -138,7 +139,9 @@ export default function Index() {
             <section>
               <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
                 <div className="flex items-center justify-between">
-                  <h1 className="text-3xl font-bold text-white">Conceptos</h1>
+                  <h1 className="text-3xl font-bold text-white">
+                    Todos los puntos canjeados
+                  </h1>
                   <Form method="post">
                     <button
                       className="hover:bg-green-600 group flex items-center rounded-md bg-green-800 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
@@ -153,7 +156,7 @@ export default function Index() {
                       >
                         <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
                       </svg>
-                      Agregar Concepto
+                      Canjear Puntos
                     </button>
                   </Form>
                 </div>
@@ -187,42 +190,45 @@ export default function Index() {
                 >
                   <TableHead className="bg-green-800">
                     <TableRow>
-                      <TableCell className="text-white">id</TableCell>
-                      <TableCell className="text-white">Descripcion</TableCell>
-                      <TableCell className="text-white">Puntos </TableCell>
+                      <TableCell className="text-white">Cliente</TableCell>
+                      <TableCell className="text-white">Fecha</TableCell>
+                      <TableCell className="text-white">Concepto</TableCell>
+                      <TableCell className="text-white">
+                        Puntos Usados
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {(rowsPerPage > 0
-                      ? conceptos.slice(
+                      ? canjes.slice(
                           page * rowsPerPage,
                           page * rowsPerPage + rowsPerPage
                         )
-                      : conceptos
+                      : canjes
                     ).map((row) => (
                       <TableRow
-                        key={row.idConcepto}
+                        key={row.id}
                         className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
-                        onClick={() => {
-                          navigate(`/conceptos/${row.idConcepto}/edit`);
-                        }}
+                        /* onClick={() => {
+                          setUsuario(row);
+                          setOpen(true);
+                        }} */
                       >
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className="text-sand-300 hover:text-gray-900"
-                        >
-                          {row.idConcepto}
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.cliente}
                         </TableCell>
                         <TableCell
                           component="th"
                           scope="row"
                           className="text-sand-300 hover:text-gray-900"
                         >
-                          {row.descripcion}
+                          {row.fechaOperacion}
                         </TableCell>
                         <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.puntos}
+                          {row.concepto}
+                        </TableCell>
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.puntosUsados}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -242,7 +248,7 @@ export default function Index() {
                           { label: "All", value: -1 },
                         ]}
                         colSpan={6}
-                        count={conceptos.length}
+                        count={canjes.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         SelectProps={{

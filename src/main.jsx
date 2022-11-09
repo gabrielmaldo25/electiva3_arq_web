@@ -10,7 +10,15 @@ import Cliente, { loader as clienteLoader } from "./routes/clientes/cliente";
 import EditCliente, { action as editAction } from "./routes/clientes/edit";
 import { action as destroyAction } from "./routes/clientes/destroy";
 import Index from "./routes/clientes/index";
-import IndexDashboard from "./routes/dashboard/index";
+import IndexDashboard, {
+  action as pagoRootAction,
+  loader as pagoRootLoader,
+} from "./routes/dashboard/index";
+import ABMPago, {
+  loader as pagoLoader,
+  action as pagoAction,
+  destroyPago,
+} from "./routes/dashboard/abmPago";
 import IndexReglas, {
   action as reglaRootAction,
   loader as reglaRootLoader,
@@ -31,13 +39,46 @@ import ABMRegla, {
   destroyRegla,
 } from "./routes/reglas/abmRegla";
 
+import IndexCanjes, {
+  action as canjesRootAction,
+  loader as canjesRootLoader,
+} from "./routes/canjes/index";
+import ABMCanje, {
+  //loader as canjeLoader,
+  action as canjeAction,
+} from "./routes/canjes/abmCanje";
+
 export default function Main() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <IndexDashboard />,
       errorElement: <ErrorPage />,
+      action: pagoRootAction,
+      loader: pagoRootLoader,
+      children: [
+        {
+          path: ":idPago/edit",
+          element: <ABMPago />,
+          loader: pagoLoader,
+          action: pagoAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "/pagos/new",
+          element: <ABMPago />,
+          loader: pagoLoader,
+          action: pagoAction,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: ":idPago/edit/destroy",
+          action: destroyPago,
+          errorElement: <ErrorPage />,
+        },
+      ],
     },
+
     {
       path: "clientes",
       element: <Root />,
@@ -130,6 +171,42 @@ export default function Main() {
           action: destroyConcepto,
           errorElement: <ErrorPage />,
         },
+      ],
+    },
+
+    {
+      path: "canjes",
+      element: <IndexCanjes />,
+      errorElement: <ErrorPage />,
+      loader: canjesRootLoader,
+      action: canjesRootAction,
+
+      children: [
+        /* {
+          path: ":idCliente",
+          element: <Cliente />,
+          loader: clienteLoader,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: ":idCliente/edit",
+          element: <EditCliente />,
+          loader: clienteLoader,
+          action: editAction,
+          errorElement: <ErrorPage />,
+        }, */
+        {
+          path: "new",
+          element: <ABMCanje />,
+          /* loader: canjeLoader, */
+          action: canjeAction,
+          errorElement: <ErrorPage />,
+        },
+        /* {
+          path: ":idCliente/destroy",
+          action: destroyAction,
+          errorElement: <ErrorPage />,
+        }, */
       ],
     },
   ]);
