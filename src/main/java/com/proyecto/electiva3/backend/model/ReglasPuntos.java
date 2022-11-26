@@ -23,4 +23,7 @@ public class ReglasPuntos {
 
     @Column(name = "monto", nullable = false, columnDefinition = "NUMERIC(12,2)")
     private Float monto;
+
+    @Column(name = "validezDias", nullable = false)
+    private Integer validezDias;
 }

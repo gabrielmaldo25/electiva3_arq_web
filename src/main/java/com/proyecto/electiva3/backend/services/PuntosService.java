@@ -40,9 +40,14 @@ public class PuntosService {
     public void registrarPuntos(Long idCliente, Float monto) throws Exception {
         Cliente cliente = clienteService.findById(idCliente);
         ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
+        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(monto, monto);
 
         if(cliente == null) {
             throw new Exception("El cliente no se encuentra en la base de datos.");
+        }
+
+        if (regla == null) {
+            throw new Exception("No existe regla para este monto : " + monto);
         }
 
         Float cantPuntos = calcularPuntos(monto);
@@ -56,7 +61,7 @@ public class PuntosService {
         // asigna la fecha actual
         bolsaPuntos.setFechaAsig(LocalDate.now());
         // asigna la fecha actual + los dias de duracion del punto
-        bolsaPuntos.setFechaCaducidad(LocalDate.now().plusDays(parametrizacionPuntos.getDuracion()));
+        bolsaPuntos.setFechaCaducidad(LocalDate.now().plusDays(regla.getValidezDias())); // dias de validez de la regla
         bolsaPuntos.setPuntos(cantPuntos);
         bolsaPuntos.setPuntosUsados(0f);
         bolsaPuntos.setPuntosSaldo(cantPuntos);

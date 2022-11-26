@@ -18,9 +18,9 @@ public class SpringConfig {
     BolsaPuntosRepository bolsaPuntosRepository;
 
     // se ejecuta cada 2 min: PARA PRUEBAS
-    //@Scheduled(cron = "0 * * ? * *")
+    //@Scheduled(cron = "0 2 * ? * *")
     // la tarea se ejecuta al final de cada dia: 23:00:00
-    @Scheduled(cron = "0 0 23 ? * * *")
+    @Scheduled(cron = "0 0 23 ? * *")
     public void scheduleTaskUsingCronExpression() {
         List<BolsaPuntos> bolsas = bolsaPuntosRepository.findByFechaCaducidadLessThanEqualAndPuntosSaldoGreaterThan(LocalDate.now(), 0f);
         if(bolsas == null) return;

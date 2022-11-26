@@ -17,6 +17,7 @@ public class ReglasPuntosService {
         objeto.setLimiteInferior(objetoDTO.getLimiteInferior());
         objeto.setLimiteSuperior(objetoDTO.getLimiteSuperior());
         objeto.setMonto(objetoDTO.getMonto());
+        objeto.setValidezDias(objetoDTO.getValidezDias());
     }
 
     public ReglasPuntos create(ReglasPuntos objeto) {
