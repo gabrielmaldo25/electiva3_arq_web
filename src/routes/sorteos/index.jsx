@@ -28,7 +28,7 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { getReglas } from "./reglas";
+import { getCanjes } from "./sorteos";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -93,19 +93,23 @@ function TablePaginationActions(props) {
 }
 
 export async function action() {
-  return redirect(`/reglas/new`);
+  return redirect(`/sorteos/new`);
 }
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const reglas = await getReglas(q);
-  return { reglas, q };
+  const sorteos = await getCanjes(q);
+  return { sorteos, q };
 }
 
 export default function Index() {
+  const [open, setOpen] = useState(false);
   const outlet = useOutlet();
-  const { reglas, q } = useLoaderData();
+  const { sorteos, q } = useLoaderData();
+  useEffect(() => {
+    console.log("CANJES: ", sorteos);
+  }, [sorteos]);
   const navigate = useNavigate();
 
   /* Parte de la tabla */
@@ -114,7 +118,7 @@ export default function Index() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - reglas.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sorteos.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -135,7 +139,9 @@ export default function Index() {
             <section>
               <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
                 <div className="flex items-center justify-between">
-                  <h1 className="text-3xl font-bold text-white">Reglas</h1>
+                  <h1 className="text-3xl font-bold text-white">
+                    Todos los premios sorteados
+                  </h1>
                   <Form method="post">
                     <button
                       className="hover:bg-green-600 group flex items-center rounded-md bg-green-800 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
@@ -150,7 +156,7 @@ export default function Index() {
                       >
                         <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
                       </svg>
-                      Agregar Regla
+                      Realizar Sorteo
                     </button>
                   </Form>
                 </div>
@@ -163,66 +169,37 @@ export default function Index() {
                 >
                   <TableHead className="bg-green-800">
                     <TableRow>
-                      <TableCell className="text-white">id</TableCell>
-                      <TableCell className="text-white">Tipo</TableCell>
+                      <TableCell className="text-white">Cliente</TableCell>
+                      <TableCell className="text-white">Premio</TableCell>
                       <TableCell className="text-white">
-                        Limite Inferior
-                      </TableCell>
-                      <TableCell className="text-white">
-                        Limite Superior
-                      </TableCell>
-                      <TableCell className="text-white">
-                        Punto x Monto
-                      </TableCell>
-                      <TableCell className="text-white">
-                        Validez (días)
+                        Fecha de Sorteo
                       </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {(rowsPerPage > 0
-                      ? reglas.slice(
+                      ? sorteos.slice(
                           page * rowsPerPage,
                           page * rowsPerPage + rowsPerPage
                         )
-                      : reglas
+                      : sorteos
                     ).map((row) => (
                       <TableRow
-                        key={row.idRegla}
+                        key={row.id}
                         className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
-                        onClick={() => {
-                          navigate(`/reglas/${row.idRegla}/edit`);
-                        }}
                       >
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className="text-sand-300 hover:text-gray-900"
-                        >
-                          {row.idRegla}
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.cliente}
                         </TableCell>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className="text-sand-300 hover:text-gray-900"
-                        >
-                          {row.destino}
+                        <TableCell className="text-sand-300 hover:text-gray-900">
+                          {row.concepto}
                         </TableCell>
                         <TableCell
                           component="th"
                           scope="row"
                           className="text-sand-300 hover:text-gray-900"
                         >
-                          {row.limiteInferior}
-                        </TableCell>
-                        <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.limiteSuperior}
-                        </TableCell>
-                        <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.monto}
-                        </TableCell>
-                        <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.validezDias}
+                          {row.fechaOperacion}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -242,7 +219,7 @@ export default function Index() {
                           { label: "All", value: -1 },
                         ]}
                         colSpan={6}
-                        count={reglas.length}
+                        count={sorteos.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         SelectProps={{

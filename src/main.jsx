@@ -48,6 +48,15 @@ import ABMCanje, {
   action as canjeAction,
 } from "./routes/canjes/abmCanje";
 
+import IndexSorteos, {
+  action as sorteosRootAction,
+  loader as sorteosRootLoader,
+} from "./routes/sorteos/index";
+import ABMSorteo, {
+  //loader as canjeLoader,
+  action as sorteoAction,
+} from "./routes/sorteos/abmSorteo";
+
 export default function Main() {
   const router = createBrowserRouter([
     {
@@ -200,6 +209,42 @@ export default function Main() {
           element: <ABMCanje />,
           /* loader: canjeLoader, */
           action: canjeAction,
+          errorElement: <ErrorPage />,
+        },
+        /* {
+          path: ":idCliente/destroy",
+          action: destroyAction,
+          errorElement: <ErrorPage />,
+        }, */
+      ],
+    },
+
+    {
+      path: "sorteos",
+      element: <IndexSorteos />,
+      errorElement: <ErrorPage />,
+      loader: sorteosRootLoader,
+      action: sorteosRootAction,
+
+      children: [
+        /* {
+          path: ":idCliente",
+          element: <Cliente />,
+          loader: clienteLoader,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: ":idCliente/edit",
+          element: <EditCliente />,
+          loader: clienteLoader,
+          action: editAction,
+          errorElement: <ErrorPage />,
+        }, */
+        {
+          path: "new",
+          element: <ABMSorteo />,
+          /* loader: canjeLoader, */
+          action: sorteoAction,
           errorElement: <ErrorPage />,
         },
         /* {

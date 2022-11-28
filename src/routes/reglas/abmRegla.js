@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Form, useNavigate, useLoaderData, redirect } from "react-router-dom";
 import { createRegla, updateRegla, getRegla, deleteRegla } from "./reglas";
@@ -28,7 +28,15 @@ export async function destroyRegla({ params }) {
 export default function ABMRegla({ open, setOpen }) {
   const regla = useLoaderData();
   const navigate = useNavigate();
+  const [tipoRegla, setTipoRegla] = useState("ninguno");
+  function tipoReglaChange(event) {
+    console.log(event.target.value);
+    setTipoRegla(event.target.value);
+  }
 
+  useEffect(() => {
+    console.log("REGLA A EDITAR: ", regla);
+  }, [regla]);
   return (
     <div className="flex flex-1 bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6 justify-center ">
       <div className=" flex flex-col justify-center">
@@ -37,35 +45,85 @@ export default function ABMRegla({ open, setOpen }) {
         </h1>
 
         <Form method="post">
-          <div className="bg-sand-300 space-y-4 w-full pt-4 flex flex-col">
-            <input
-              type="text"
-              placeholder="Limite Inferior"
-              name="limiteInferior"
-              defaultValue={regla.limiteInferior}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Limite Superior"
-              name="limiteSuperior"
-              defaultValue={regla.limiteSuperior}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Monto (1 punto cada monto)"
-              name="monto"
-              defaultValue={regla.monto}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Validez de puntos (días)"
-              name="validezDias"
-              defaultValue={regla.validezDias}
-              required
-            />
+          <div className="bg-sand-300 space-y-4 w-full pt-4 flex flex-col text-white">
+            <fieldset>
+              <legend>Elige un color</legend>
+              <div className="flex flex-row gap-4" onChange={tipoReglaChange}>
+                <label>
+                  <input type="radio" name="destino" value="ninguno" /> Regla
+                  Normal
+                </label>
+                <label>
+                  <input type="radio" name="destino" value="sorteo" /> Regla de
+                  Sorteo
+                </label>
+                <label>
+                  <input type="radio" name="destino" value="alerta" /> Regla de
+                  Alerta
+                </label>
+              </div>
+            </fieldset>
+
+            {/*  <label>
+              <input
+                type="checkbox"
+                placeholder="Validez de puntos (días)"
+                name="isSorteo"
+                defaultValue={regla.esSorteo}
+                required
+              />{" "}
+              Regla de sorteo
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                placeholder="Validez de puntos (días)"
+                name="isSorteo"
+                defaultValue={regla.esSorteo}
+                required
+              />{" "}
+              Regla de alerta
+            </label> */}
+            {tipoRegla !== "alerta" && (
+              <div>
+                <input
+                  type="text"
+                  placeholder="Limite Inferior"
+                  name="limiteInferior"
+                  defaultValue={regla.limiteInferior}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Limite Superior"
+                  name="limiteSuperior"
+                  defaultValue={regla.limiteSuperior}
+                  required
+                />
+              </div>
+            )}
+            {tipoRegla == "ninguno" && (
+              <input
+                type="text"
+                placeholder={"Monto (1 punto cada monto)"}
+                name="monto"
+                defaultValue={regla.monto}
+                required
+              />
+            )}
+            {tipoRegla !== "sorteo" && (
+              <input
+                type="text"
+                placeholder={
+                  tipoRegla == "ninguno"
+                    ? "Validez de puntos (días)"
+                    : "Cuántos días antes del vencimiento avisar"
+                }
+                name="validezDias"
+                defaultValue={regla.validezDias}
+                required
+              />
+            )}
           </div>
           <div className="space-x-8 p-8 flex flex-row">
             <div className="space-x-4">
