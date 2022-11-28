@@ -28,13 +28,13 @@ public class ParametrizacionController {
         return ParamPuntosDTO.instanciar(paramPuntosService.findById(id));
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ParamPuntosDTO create(@RequestBody ParamPuntosDTO objetoDTO) {
-        ParamPuntos objeto = new ParamPuntos();
-        paramPuntosService.convertToDTO(objeto, objetoDTO);
-        return ParamPuntosDTO.instanciar(paramPuntosService.create(objeto));
-    }
+    //    @PostMapping
+    //    @ResponseStatus(HttpStatus.CREATED)
+    //    public ParamPuntosDTO create(@RequestBody ParamPuntosDTO objetoDTO) {
+    //        ParamPuntos objeto = new ParamPuntos();
+    //        paramPuntosService.convertToDTO(objeto, objetoDTO);
+    //        return ParamPuntosDTO.instanciar(paramPuntosService.create(objeto));
+    //    }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

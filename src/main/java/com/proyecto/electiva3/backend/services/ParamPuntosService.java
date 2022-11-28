@@ -21,17 +21,18 @@ public class ParamPuntosService {
         objeto.setDuracion(objetoDTO.getDuracion());
     }
 
-    public ParamPuntos create(ParamPuntos objeto) {
+    public ParamPuntos create(ParamPuntos objeto) throws Exception {
         objeto.setFechaFin(null);
         objeto.setFechaInicio(LocalDate.now());
         // por si existen varias parametrizaciones de puntos vigentes
         // se le agrega fechaFin para finaliar su vigencia y crear uno nuevo
-        for(ParamPuntos param : this.getAllCurrentParam()) {
-            param.setFechaFin(LocalDate.now());
-            this.update(param);
-        }
+        //        for(ParamPuntos param : this.getAllCurrentParam()) {
+        //            param.setFechaFin(LocalDate.now());
+        //            this.update(param);
+        //        }
+        throw new Exception("La funcionalidad de create Parametrizacion ha quedado en desuso.");
 
-        return paramPuntosRepository.save(objeto);
+        //return paramPuntosRepository.save(objeto);
     }
 
     public ParamPuntos update(ParamPuntos objeto) {

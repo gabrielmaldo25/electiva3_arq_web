@@ -40,7 +40,7 @@ public class PuntosService {
     /* Registrar puntos a un cliente */
     public void registrarPuntos(Long idCliente, Float monto) throws Exception {
         Cliente cliente = clienteService.findById(idCliente);
-        ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
+        //ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
         ReglasPuntos regla = reglasPuntosService.findRule(monto, monto, GeneralUtils.NINGUNO);
 
         if(cliente == null) {
@@ -142,7 +142,7 @@ public class PuntosService {
 
     public Float calcularPuntos(Float monto) throws Exception {
         ReglasPuntos regla = reglasPuntosService.findRule(monto, monto, GeneralUtils.NINGUNO);
-        ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
+        //ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
 
         if(regla == null) {
             regla = reglasPuntosService.findRule(null, null, GeneralUtils.NINGUNO);
@@ -153,10 +153,10 @@ public class PuntosService {
             return 0f;
         }
 
-        if(parametrizacionPuntos == null) {
-            System.out.println(">>> RESUL: No hay puntos parametrizados disponibles. <<<");
-            return 0f;
-        }
+        //        if(parametrizacionPuntos == null) {
+        //            System.out.println(">>> RESUL: No hay puntos parametrizados disponibles. <<<");
+        //            return 0f;
+        //        }
 
         Float cantPuntos = monto / regla.getMonto();
         if(cantPuntos < 0) cantPuntos = 0f;
