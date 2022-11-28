@@ -21,12 +21,12 @@ public class ReglasPuntos {
     @Column(name = "limite_superior", nullable = true, columnDefinition = "NUMERIC(12,2)")
     private Float limiteSuperior;
 
-    @Column(name = "monto", nullable = false, columnDefinition = "NUMERIC(12,2)")
+    @Column(name = "monto", nullable = true, columnDefinition = "NUMERIC(12,2)")
     private Float monto;
 
-    @Column(name = "validezDias", nullable = false)
+    @Column(name = "validezDias", nullable = true)
     private Integer validezDias;
 
-    @Column(name = "destino", nullable = false)
+    @Column(name = "destino", nullable = true)
     private String destino;
 }
