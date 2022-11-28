@@ -7,6 +7,7 @@ com\proyecto\electiva3\backend\model\BolsaPuntos.class
 com\proyecto\electiva3\backend\repository\PuntosDetalleRepostitory.class
 com\proyecto\electiva3\backend\controller\PuntosController.class
 com\proyecto\electiva3\backend\services\ParamPuntosService.class
+com\proyecto\electiva3\backend\email\ApiConfig.class
 com\proyecto\electiva3\backend\services\ReglasPuntosService.class
 com\proyecto\electiva3\backend\model\reporte\UsoPuntos.class
 com\proyecto\electiva3\backend\BackendApplication$1.class
@@ -22,9 +23,11 @@ com\proyecto\electiva3\backend\controller\ConsultasController.class
 com\proyecto\electiva3\backend\tasks\SpringConfig.class
 com\proyecto\electiva3\backend\controller\ClienteController.class
 com\proyecto\electiva3\backend\services\ClienteService.class
+com\proyecto\electiva3\backend\email\CorreoService.class
 com\proyecto\electiva3\backend\security\SecurityConfiguration.class
 com\proyecto\electiva3\backend\repository\ReglasPuntosRepository.class
 com\proyecto\electiva3\backend\model\PuntosCabecera.class
+com\proyecto\electiva3\backend\controller\AuthenticationController.class
 com\proyecto\electiva3\backend\model\reporte\BolsaPuntos.class
 com\proyecto\electiva3\backend\model\DTO\ParamPuntosDTO.class
 com\proyecto\electiva3\backend\model\DTO\GeneralDTO.class

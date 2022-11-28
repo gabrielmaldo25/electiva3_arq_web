@@ -1,4 +1,5 @@
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\controller\ReglasPuntosController.java
+C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\email\ApiConfig.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\security\SecurityConfiguration.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\DTO\ReglasPuntosDTO.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\DTO\GeneralDTO.java
@@ -12,10 +13,12 @@ C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\co
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\services\ClienteService.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\reporte\UsoPuntos.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\repository\ConceptoRepository.java
+C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\controller\AuthenticationController.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\ParamPuntos.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\repository\PuntosCabeceraRepository.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\tasks\SpringConfig.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\controller\PuntosController.java
+C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\email\CorreoService.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\Concepto.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\reporte\BolsaPuntos.java
 C:\Users\User\Documents\FP-UNA\Arq. Web\repos\electiva3_backend\src\main\java\com\proyecto\electiva3\backend\model\PuntosDetalle.java

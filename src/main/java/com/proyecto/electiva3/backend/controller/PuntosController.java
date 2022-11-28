@@ -84,7 +84,7 @@ public class PuntosController {
         return puntos;
     }
 
-    @PostMapping("/participantes")
+    @GetMapping("/participantes")
     public List<ClienteDTO> verParticipantes() throws Exception {
         List<ClienteDTO> clientes = clienteService.findAll();
         List<ClienteDTO> participantes = new ArrayList();
