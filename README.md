@@ -10,3 +10,4 @@
   - spring.datasource.username = __USERNAME__
     spring.datasource.password = __PASSWORD__
 - Correr el proyecto Java.
+- Login: Username = admin Password: 12345
