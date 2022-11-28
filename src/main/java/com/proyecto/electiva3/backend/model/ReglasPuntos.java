@@ -26,4 +26,7 @@ public class ReglasPuntos {
 
     @Column(name = "validezDias", nullable = false)
     private Integer validezDias;
+
+    @Column(name = "destino", nullable = false)
+    private String destino;
 }

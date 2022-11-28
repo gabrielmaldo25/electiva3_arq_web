@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 public class GeneralUtils {
     public final static String DATE_FORMAT = "yyyy-MM-dd";
+    public final static String NINGUNO = "ninguno";
+    public final static String ALERTA = "alerta";
+    public final static String SORTEO = "sorteo";
 
     /* Convertir string a fecha */
     public static String getStringFromDate(LocalDate date) {

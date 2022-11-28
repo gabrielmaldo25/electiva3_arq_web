@@ -42,11 +42,11 @@ public class ReglasPuntosController {
         reglasService.convertToDTO(objeto, objetoDTO);
 
         // si existe campo validezDiaz crear parametrizacion
-        if(objetoDTO.getValidezDias() != null && objetoDTO.getValidezDias().intValue() > 0) {
-            ParamPuntos parametro = new ParamPuntos();
-            parametro.setDuracion(objetoDTO.getValidezDias());
-            paramPuntosService.create(parametro);
-        }
+        //        if(objetoDTO.getValidezDias() != null && objetoDTO.getValidezDias().intValue() > 0) {
+        //            ParamPuntos parametro = new ParamPuntos();
+        //            parametro.setDuracion(objetoDTO.getValidezDias());
+        //            paramPuntosService.create(parametro);
+        //        }
 
         return ReglasPuntosDTO.instanciar(reglasService.create(objeto));
     }

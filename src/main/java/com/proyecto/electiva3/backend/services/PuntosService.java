@@ -5,6 +5,7 @@ import com.proyecto.electiva3.backend.repository.BolsaPuntosRepository;
 import com.proyecto.electiva3.backend.repository.PuntosCabeceraRepository;
 import com.proyecto.electiva3.backend.repository.PuntosDetalleRepostitory;
 import com.proyecto.electiva3.backend.repository.ReglasPuntosRepository;
+import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class PuntosService {
     private ConceptoService conceptoService;
 
     @Autowired
-    private ReglasPuntosRepository reglasPuntosRepository;
+    private ReglasPuntosService reglasPuntosService;
 
     @Autowired
     private BolsaPuntosRepository bolsaPuntosRepository;
@@ -40,7 +41,7 @@ public class PuntosService {
     public void registrarPuntos(Long idCliente, Float monto) throws Exception {
         Cliente cliente = clienteService.findById(idCliente);
         ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
-        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(monto, monto);
+        ReglasPuntos regla = reglasPuntosService.findRule(monto, monto, GeneralUtils.NINGUNO);
 
         if(cliente == null) {
             throw new Exception("El cliente no se encuentra en la base de datos.");
@@ -140,11 +141,11 @@ public class PuntosService {
     }
 
     public Float calcularPuntos(Float monto) throws Exception {
-        ReglasPuntos regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(monto, monto);
+        ReglasPuntos regla = reglasPuntosService.findRule(monto, monto, GeneralUtils.NINGUNO);
         ParamPuntos parametrizacionPuntos = paramPuntosService.getCurrentParam();
 
         if(regla == null) {
-            regla = reglasPuntosRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(null, null);
+            regla = reglasPuntosService.findRule(null, null, GeneralUtils.NINGUNO);
         }
 
         if (regla == null) {

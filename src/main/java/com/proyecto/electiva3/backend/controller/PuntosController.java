@@ -1,14 +1,27 @@
 package com.proyecto.electiva3.backend.controller;
 
+import com.proyecto.electiva3.backend.email.CorreoService;
+import com.proyecto.electiva3.backend.model.BolsaPuntos;
 import com.proyecto.electiva3.backend.model.Cliente;
 import com.proyecto.electiva3.backend.model.Concepto;
+import com.proyecto.electiva3.backend.model.DTO.ClienteDTO;
 import com.proyecto.electiva3.backend.model.DTO.GeneralDTO;
+import com.proyecto.electiva3.backend.model.ReglasPuntos;
+import com.proyecto.electiva3.backend.repository.BolsaPuntosRepository;
 import com.proyecto.electiva3.backend.services.ClienteService;
 import com.proyecto.electiva3.backend.services.ConceptoService;
 import com.proyecto.electiva3.backend.services.PuntosService;
+import com.proyecto.electiva3.backend.services.ReglasPuntosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/puntos")
@@ -22,6 +35,15 @@ public class PuntosController {
 
     @Autowired
     private ConceptoService conceptoService;
+
+    @Autowired
+    private CorreoService correoService;
+
+    @Autowired
+    private BolsaPuntosRepository bolsaPuntosRepository;
+
+    @Autowired
+    private ReglasPuntosService reglasPuntosService;
 
     @PostMapping("/pago")
     @ResponseStatus(HttpStatus.OK)
@@ -60,6 +82,58 @@ public class PuntosController {
     public Float calcularPuntos(@RequestParam Float monto) throws Exception {
         Float puntos = puntosService.calcularPuntos(monto);
         return puntos;
+    }
+
+    @PostMapping("/participantes")
+    public List<ClienteDTO> verParticipantes() throws Exception {
+        List<ClienteDTO> clientes = clienteService.findAll();
+        List<ClienteDTO> participantes = new ArrayList();
+        ReglasPuntos regla = reglasPuntosService.findSorteoRule();
+
+        if(regla == null)
+            throw new Exception("No existe aun regla de sorteo.");
+        // listar clientes
+        for(ClienteDTO cli : clientes) {
+            Cliente aux = new Cliente();
+            Float puntos = 0f;
+
+            clienteService.convertToDTO(aux, cli);
+            List<BolsaPuntos> bolsaPuntos = bolsaPuntosRepository.findByCliente(aux);
+            // listar puntos
+            if(bolsaPuntos == null) continue;
+            for(BolsaPuntos bol : bolsaPuntos) {
+                puntos += bol.getPuntosSaldo();
+            }
+
+            // es participante?
+            if(puntos >= regla.getLimiteInferior() && puntos <= regla.getLimiteSuperior()) {
+                participantes.add(cli);
+            }
+        }
+
+        return participantes;
+    }
+
+    @GetMapping("/sortear")
+    public ClienteDTO sortear(@RequestParam Long idCliente, @RequestParam Long idConcepto) throws Exception {
+        if(idCliente == null || idConcepto == null)
+            throw new Exception("Error en la recepcion de parametros.");
+
+        Cliente cliente = clienteService.findById(idCliente);
+        Concepto concepto = conceptoService.findById(idConcepto);
+
+        if(cliente == null || concepto == null)
+            throw new Exception("No existe el cliente o el concepto.");
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("name", cliente.getNombre() + " " + cliente.getApellido());
+        String premio = "Concepto : " + concepto.getDescripcion() + ", Puntos : " + concepto.getPuntos();
+        parametros.put("premio", premio);
+        correoService.enviar_correo_ganador(cliente.getEmail(), parametros);
+
+        ClienteDTO cli = new ClienteDTO();
+        clienteService.convertToDTO(cliente, cli);
+        return cli;
     }
 
 }

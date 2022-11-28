@@ -17,6 +17,7 @@ public class ReglasPuntosDTO {
     private Float limiteSuperior;
     private Float monto;
     private Integer validezDias;
+    private String destino;
 
     public static ReglasPuntosDTO instanciar(ReglasPuntos reglasPuntos) {
         if(reglasPuntos == null) return null;

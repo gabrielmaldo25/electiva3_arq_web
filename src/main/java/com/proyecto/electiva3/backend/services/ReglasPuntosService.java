@@ -3,6 +3,7 @@ package com.proyecto.electiva3.backend.services;
 import com.proyecto.electiva3.backend.model.DTO.ReglasPuntosDTO;
 import com.proyecto.electiva3.backend.model.ReglasPuntos;
 import com.proyecto.electiva3.backend.repository.ReglasPuntosRepository;
+import com.proyecto.electiva3.backend.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,17 @@ public class ReglasPuntosService {
 
     public ReglasPuntos findById(Long id) {
         return reglasRepository.findByIdRegla(id);
+    }
+
+    public ReglasPuntos findAlertRule() {
+        return reglasRepository.findTopByDestino(GeneralUtils.ALERTA);
+    }
+
+    public ReglasPuntos findSorteoRule() {
+        return reglasRepository.findTopByDestino(GeneralUtils.SORTEO);
+    }
+
+    public ReglasPuntos findRule(Float min, Float max, String destino) {
+        return reglasRepository.findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqualAndDestino(min, max, destino);
     }
 }

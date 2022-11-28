@@ -19,6 +19,7 @@ com\proyecto\electiva3\backend\repository\PuntosCabeceraRepository.class
 com\proyecto\electiva3\backend\BackendApplication.class
 com\proyecto\electiva3\backend\controller\ConceptoController.class
 com\proyecto\electiva3\backend\controller\ConsultasController.class
+com\proyecto\electiva3\backend\tasks\SpringConfig.class
 com\proyecto\electiva3\backend\controller\ClienteController.class
 com\proyecto\electiva3\backend\services\ClienteService.class
 com\proyecto\electiva3\backend\security\SecurityConfiguration.class

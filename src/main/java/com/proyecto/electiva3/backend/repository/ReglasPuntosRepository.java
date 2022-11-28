@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReglasPuntosRepository extends JpaRepository<ReglasPuntos, Long> {
     public ReglasPuntos findByIdRegla(Long idRegla);
-    public ReglasPuntos findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqual(Float limiteInferior, Float limiteSuperior);
+    public ReglasPuntos findTopByLimiteSuperiorGreaterThanEqualAndLimiteInferiorLessThanEqualAndDestino(Float limiteInferior, Float limiteSuperior, String destino);
+    public ReglasPuntos findTopByDestino(String destino);
 }
