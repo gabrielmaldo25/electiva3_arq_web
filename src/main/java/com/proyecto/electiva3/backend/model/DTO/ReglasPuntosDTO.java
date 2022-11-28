@@ -27,6 +27,7 @@ public class ReglasPuntosDTO {
         objeto.limiteSuperior = reglasPuntos.getLimiteSuperior();
         objeto.monto = reglasPuntos.getMonto();
         objeto.validezDias = reglasPuntos.getValidezDias();
+        objeto.destino = reglasPuntos.getDestino();
         return objeto;
     }
 }
