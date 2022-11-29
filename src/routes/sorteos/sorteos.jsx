@@ -1,3 +1,27 @@
+export async function getParticipantes(query) {
+  let participantes = [];
+  try {
+    let q = `/api/puntos/participantes`;
+    let res = await fetch(q);
+    participantes = await res.json();
+  } catch (error) {
+    console.log("ERROR; ", error);
+  }
+  return participantes;
+}
+
+export async function getGanador(query) {
+  let ganador = [];
+  try {
+    let q = `/api/puntos/sortear`;
+    let res = await fetch(q);
+    ganador = await res.json();
+  } catch (error) {
+    console.log("ERROR; ", error);
+  }
+  return ganador;
+}
+
 export async function getCanjes(query) {
   let canjes = [];
   try {

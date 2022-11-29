@@ -28,7 +28,7 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { getCanjes } from "./sorteos";
+import { getCanjes, getParticipantes } from "./sorteos";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -99,7 +99,7 @@ export async function action() {
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const sorteos = await getCanjes(q);
+  const sorteos = await getParticipantes(q);
   return { sorteos, q };
 }
 
@@ -140,7 +140,7 @@ export default function Index() {
               <header className="bg-zinc-900 space-y-4 p-4  sm:py-6 lg:py-4  xl:py-6">
                 <div className="flex items-center justify-between">
                   <h1 className="text-3xl font-bold text-white">
-                    Todos los premios sorteados
+                    Participantes Habilitados
                   </h1>
                   <Form method="post">
                     <button
@@ -170,10 +170,7 @@ export default function Index() {
                   <TableHead className="bg-green-800">
                     <TableRow>
                       <TableCell className="text-white">Cliente</TableCell>
-                      <TableCell className="text-white">Premio</TableCell>
-                      <TableCell className="text-white">
-                        Fecha de Sorteo
-                      </TableCell>
+                      <TableCell className="text-white">Puntos</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -185,21 +182,14 @@ export default function Index() {
                       : sorteos
                     ).map((row) => (
                       <TableRow
-                        key={row.id}
+                        key={row.idCliente}
                         className=" hover:bg-zinc-300 ring-1 ring-gray-900 "
                       >
                         <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.cliente}
+                          {row.nombre} {row.apellido}
                         </TableCell>
                         <TableCell className="text-sand-300 hover:text-gray-900">
-                          {row.concepto}
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className="text-sand-300 hover:text-gray-900"
-                        >
-                          {row.fechaOperacion}
+                          {row.puntos}
                         </TableCell>
                       </TableRow>
                     ))}

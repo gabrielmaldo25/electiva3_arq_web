@@ -8,6 +8,7 @@ export function loader({ params }) {
 export async function action({ request, params }) {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
+  console.log("ENVIAR CLIENTE: ", updates);
   let res;
   if (params.idCliente) {
     await updateCliente(params.idCliente, updates);

@@ -28,7 +28,9 @@ export async function destroyRegla({ params }) {
 export default function ABMRegla({ open, setOpen }) {
   const regla = useLoaderData();
   const navigate = useNavigate();
-  const [tipoRegla, setTipoRegla] = useState("ninguno");
+  const [tipoRegla, setTipoRegla] = useState(
+    regla.destino ? regla.destino : "ninguno"
+  );
   function tipoReglaChange(event) {
     console.log(event.target.value);
     setTipoRegla(event.target.value);
@@ -45,21 +47,36 @@ export default function ABMRegla({ open, setOpen }) {
         </h1>
 
         <Form method="post">
-          <div className="bg-sand-300 space-y-4 w-full pt-4 flex flex-col text-white">
-            <fieldset>
-              <legend>Elige un color</legend>
+          <div className="bg-sand-300 space-y-4 w-full pt-4 flex flex-col">
+            <fieldset className="text-white">
+              <legend>Tipo de Regla</legend>
               <div className="flex flex-row gap-4" onChange={tipoReglaChange}>
                 <label>
-                  <input type="radio" name="destino" value="ninguno" /> Regla
-                  Normal
+                  <input
+                    type="radio"
+                    name="destino"
+                    value="ninguno"
+                    checked={tipoRegla === "ninguno"}
+                  />{" "}
+                  Regla Normal
                 </label>
                 <label>
-                  <input type="radio" name="destino" value="sorteo" /> Regla de
-                  Sorteo
+                  <input
+                    type="radio"
+                    name="destino"
+                    value="sorteo"
+                    checked={tipoRegla === "sorteo"}
+                  />{" "}
+                  Regla de Sorteo
                 </label>
                 <label>
-                  <input type="radio" name="destino" value="alerta" /> Regla de
-                  Alerta
+                  <input
+                    type="radio"
+                    name="destino"
+                    value="alerta"
+                    checked={tipoRegla === "alerta"}
+                  />{" "}
+                  Regla de Alerta
                 </label>
               </div>
             </fieldset>
@@ -85,7 +102,7 @@ export default function ABMRegla({ open, setOpen }) {
               Regla de alerta
             </label> */}
             {tipoRegla !== "alerta" && (
-              <div>
+              <div className="flex flex-col gap-4">
                 <input
                   type="text"
                   placeholder="Limite Inferior"

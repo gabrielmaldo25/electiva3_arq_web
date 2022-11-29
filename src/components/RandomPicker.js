@@ -53,17 +53,38 @@ class RandomPicker extends React.PureComponent {
   }
 
   render() {
+    async function enviarCorreo(currentChoice, premioId) {
+      try {
+        let res = await fetch(
+          `/api/puntos/sortear?idCliente=${currentChoice}&idConcepto=${premioId}`
+        );
+        //regla = await res.json();
+      } catch (error) {
+        console.log("ERROR; ", error);
+      }
+    }
     const { isRunning, currentChoice } = this.state;
+    const { participantes, premioId } = this.props;
+    const hasChoice = currentChoice;
+
+    if (!isRunning && hasChoice) {
+      enviarCorreo(currentChoice, premioId);
+    }
 
     return (
       <div className="RandomPicker">
-        <RandomPickerChoice choice={currentChoice} />
+        <RandomPickerChoice
+          choice={currentChoice}
+          participantes={participantes}
+        />
         <RandomPickerControls
           isRunning={isRunning}
-          hasChoice={currentChoice.trim().length > 0}
+          hasChoice={hasChoice}
           start={this.start}
           stop={this.stop}
           reset={this.reset}
+          onCancel={this.props.onCancel}
+          premioId={this.props.premioId}
         />
       </div>
     );
@@ -77,14 +98,14 @@ RandomPicker.propTypes = {
 
 class RandomPickerChoice extends React.PureComponent {
   render() {
-    const { choice } = this.props;
-    const content = choice.trim().length > 0 ? choice : "?";
-
+    const { choice, participantes } = this.props;
+    const content = choice
+      ? participantes.filter((p) => p.id == choice)
+      : [{ nombre: "?" }];
     return (
-      <div /* className="RandomPicker__choice" */>
-        <span /* className="RandomPicker__choiceItem" */ className="text-white">
-          {content}
-        </span>
+      <div className="flex flex-col gap-4 items-center justify-center py-8">
+        <span className="text-white text-xl">Ganador</span>
+        <span className="text-white text-xl">{content[0].nombre}</span>
       </div>
     );
   }
@@ -96,25 +117,28 @@ RandomPickerChoice.propTypes = {
 
 class RandomPickerControls extends React.PureComponent {
   render() {
-    const { isRunning, hasChoice, start, stop, reset } = this.props;
+    const { isRunning, hasChoice, start, stop, reset, onCancel, premioId } =
+      this.props;
 
     return (
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4 justify-center">
         <button
-          /*  class={`RandomPicker__button ${
-            isRunning && "RandomPicker__button--stop"
-          }`} */
           className={`${isRunning && "bg-red-500"} `}
           onClick={isRunning ? stop : start}
+          disabled={!premioId}
         >
-          {isRunning ? "stop" : "start"}
+          {isRunning ? "Detener" : "Sortear"}
         </button>
         <button
           disabled={isRunning || !hasChoice}
           /*           class="RandomPicker__button RandomPicker__button--reset"
            */ onClick={reset}
         >
-          reset
+          Resetear
+        </button>
+
+        <button type="button" onClick={onCancel}>
+          Cancelar
         </button>
       </div>
     );
