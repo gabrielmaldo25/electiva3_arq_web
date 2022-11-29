@@ -23,6 +23,7 @@ public class ClienteService {
     private BolsaPuntosRepository bolsaPuntosRepository;
 
     public void convertToDTO(Cliente objeto, ClienteDTO objetoDTO) {
+        objeto.setIdCliente(objetoDTO.getIdCliente());
         objeto.setNombre(objetoDTO.getNombre());
         objeto.setApellido(objetoDTO.getApellido());
         objeto.setNroDocumento(objetoDTO.getNroDocumento());
