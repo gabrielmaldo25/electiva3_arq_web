@@ -131,9 +131,7 @@ public class PuntosController {
         parametros.put("premio", premio);
         correoService.enviar_correo_ganador(cliente.getEmail(), parametros);
 
-        ClienteDTO cli = new ClienteDTO();
-        clienteService.convertToDTO(cliente, cli);
-        return cli;
+        return ClienteDTO.instanciar(cliente);
     }
 
 }
