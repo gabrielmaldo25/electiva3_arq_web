@@ -125,6 +125,20 @@ public class PuntosController {
         if(cliente == null || concepto == null)
             throw new Exception("No existe el cliente o el concepto.");
 
+        // sumar puntos al cliente
+        BolsaPuntos bolsaPremio = new BolsaPuntos();
+        ReglasPuntos regla = reglasPuntosService.findSorteoRule();
+
+        bolsaPremio.setFechaAsig(LocalDate.now());
+        bolsaPremio.setFechaCaducidad(LocalDate.now().plusDays(regla.getValidezDias()));
+        bolsaPremio.setPuntos(concepto.getPuntos());
+        bolsaPremio.setPuntosUsados(0f);
+        bolsaPremio.setPuntosSaldo(0f);
+        bolsaPremio.setMontoOperacion(0f);
+        bolsaPremio.setCliente(cliente);
+
+        bolsaPuntosRepository.save(bolsaPremio);
+
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("name", cliente.getNombre() + " " + cliente.getApellido());
         String premio = "Concepto : " + concepto.getDescripcion() + ", Puntos : " + concepto.getPuntos();
