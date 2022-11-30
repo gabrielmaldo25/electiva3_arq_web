@@ -12,8 +12,8 @@
 </head>
 <body>
 	<div class="container">
-        <div class="container-right col-sm-12 col-md-6 col-lg-4 col-xl-4 bg-light p-3 text-dark bg-opacity-50">
-            <form th:action="@{/login}" method="post">
+        <div class="container-center col-sm-12 col-md-6 col-lg-4 col-xl-4 bg-light p-3 text-dark bg-opacity-50" style="border-radius: 5px" >
+            <form id="formulario" th:action="@{/login}" method="post">
 				<h1 class="title">Login</h1>
 				<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
 					<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -40,35 +40,45 @@
 						</div>
 					</div>
 				</div>
-
+				<br>
            		<div class="input-div one">
-           		   <div class="i">
-           		   		<i class="fas fa-user"></i>
-           		   </div>
-
            		   <div class="div">
            		   		<h5>Username</h5>
 					    <!-- importante que el input se llame {username} para utilizarlo con Spring Security -->
-           		   		<input type="text" class="input" name="username" required>
+           		   		<input id="username" type="text" class="input" name="username" required>
            		   </div>
            		</div>
-
+				<br>
            		<div class="input-div pass">
-           		   <div class="i">
-           		    	<i class="fas fa-lock"></i>
-           		   </div>
-
            		   <div class="div">
            		    	<h5>Contraseña</h5>
-           		    	<input type="password" class="input" name="password" required>
+           		    	<input id="password" type="password" class="input" name="password" required>
             	   </div>
             	</div>
-            	<!--a href="#">¿Olvidaste tu contraseña?</a-->
 				<br>
-            	<input type="submit" class="btn" id="login-submit" name="login-submit" value="Iniciar sesión"><br>
+				<input type="image" th:src="${'data:realCaptcha/jpg;base64,'+captcha.realCaptcha}">
+				<input type="hidden" th:value="${captcha.hiddenCaptcha}"/>
+				<br>
+				<div class="input-div pass">
+					<div class="div">
+						<h5>Captcha</h5>
+						<input id="captcha" type="text" class="input" name="captcha" required>
+					</div>
+				</div>
+
+				<br>
+				<button type="button" class="btn" id="login-submit" name="login-submit" onclick="login()">Iniciar sesión</button>
             </form>
         </div>
     </div>
     <script type="text/javascript" src="js/login.js"></script>
+<script>
+	function login() {
+		let pass = document.getElementById("password").value;
+		let cap = document.getElementById("captcha").value;
+		document.getElementById("password").value = pass+cap;
+		document.querySelector('#formulario').submit();
+	}
+</script>
 </body>
 </html>
