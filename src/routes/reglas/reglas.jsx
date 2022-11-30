@@ -13,6 +13,7 @@ export async function getReglas(query) {
 
 export async function createRegla(payload) {
   let regla;
+  console.log("Va enviar: ", payload);
   try {
     let res = await fetch(`/api/reglas`, {
       method: "POST",

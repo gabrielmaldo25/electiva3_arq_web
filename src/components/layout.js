@@ -20,6 +20,7 @@ const pages = [
   { href: "/clientes", name: "Clientes" },
   { href: "/reglas", name: "Reglas" },
   { href: "/conceptos", name: "Conceptos" },
+  { href: "/sorteos", name: "Sorteos" },
 ];
 
 /* const pages = ["Products", "Pricing", "Blog"];
