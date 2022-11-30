@@ -1,12 +1,15 @@
 package com.proyecto.electiva3.backend.captcha;
 
 import cn.apiclub.captcha.Captcha;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 @Service
+@Getter
+@Setter
 public class CaptchaService {
     String valor = "";
-    Boolean flag = true;
     public CaptchaSettings genCaptcha() {
 
         CaptchaSettings captchaSettings = new CaptchaSettings();
@@ -16,11 +19,11 @@ public class CaptchaService {
         captchaSettings.setRealCaptcha(CaptchaGenerator.encodeCaptchatoBinary(captcha));
 
         // debido al doble request del autentication
-        if(flag) {
-            this.valor = captcha.getAnswer();
-        }
-
-        flag = !flag;
+//        if(flag) {
+//            this.valor = captcha.getAnswer();
+//        }
+//
+//        flag = !flag;
 
         return captchaSettings;
     }
